@@ -50,12 +50,8 @@ class FileUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    if original_filename
-      path = @file.file
-      extension = path.split('.').last
-      image_hash = ImageHash.new(path).hash
-
-      @filename = [image_hash, extension].join('.')
+    if original_filename && model.file_hash
+      @filename = [model.file_hash, @file.extension].join('.')
     end
     @filename
   end
