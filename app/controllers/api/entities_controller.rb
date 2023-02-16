@@ -3,11 +3,15 @@
 class Api::EntitiesController < Api::ApiController
   include Pagy::Backend
 
-  before_action :set_object, only: %i[show update destroy]
-  after_action :pagination_headers, only: %i[index]
+  skip_before_action :authenticate_request, only: %i[index]
+  before_action      :authenticate,         only: %i[index]
+  before_action      :set_object,           only: %i[show update destroy]
+  after_action       :pagination_headers,   only: %i[index]
 
   def index
-    @pagy, @entities = pagy(Entity.all)
+    entities = @current_user ? Entity.all : Entity.safe
+
+    @pagy, @entities = pagy(entities, items: object_params[:items])
     render json: @entities, status: :ok
   end
 
@@ -20,23 +24,35 @@ class Api::EntitiesController < Api::ApiController
     @entity.user = @current_user
 
     if @entity.save
-      render json: @entity, status: :created
+      render json: @entity, status: :ok
     else
-      render json: @entity.errors, status: :unprocessable_entity
+      render(
+        json: { errors: @entity.errors },
+        status: :unprocessable_entity
+      )
     end
+
+  rescue ActiveRecord::NotNullViolation => error
+    render(
+      json: { errors: [error] },
+      status: :unprocessable_entity
+    )
   end
 
   def update
     if @entity.update(object_params)
       render json: @entity, status: :ok
     else
-      render json: @entity.errors, status: :unprocessable_entity
+      render(
+        json: { errors: @entity.errors },
+        status: :unprocessable_entity
+      )
     end
   end
 
   def destroy
     @entity.destroy
-    render json: "", status: :ok
+    render json: {}, status: :ok
   end
 
   private
@@ -49,8 +65,8 @@ class Api::EntitiesController < Api::ApiController
   # Only allow a list of trusted parameters through.
   def object_params
     params.permit(
-      :id, :file, :link, :artist_id, :origin, :rating, :media_type,
-      title_ids: [], character_ids: [], tag_ids: []
+      :id, :file, :link, :origin, :rating, :media_type, :items, :page,
+      :artist_id, title_ids: [], character_ids: [], tag_ids: [],
     )
   end
 
