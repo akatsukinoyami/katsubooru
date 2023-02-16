@@ -12,4 +12,6 @@ Rails.application.routes.draw do
     post '/auth/sign_in', to: 'authentication#sign_in'
     post '/auth/sign_up', to: 'authentication#sign_up'
   end
+
+  match "*path", to: "application#fallback_index_html", via: :all
 end
