@@ -5,25 +5,27 @@
   import Row from "../../components/Row.svelte";
   import CardEntity from "../../components/CardEntity.svelte";
   import Preloader from "../../components/Preloader.svelte";
-  import { entities, tags } from "../../stores";
+  import { entities } from "../../stores";
 
   import type ColInterface from "../../interfaces/col";
-    import type TagInterface from "../../interfaces/tag";
+  import type TagsInterface from "../../interfaces/tags";
 
-  const imageSize: ColInterface = { s:6, m:4, xl:3 }
+  const allTags: TagsInterface = { artist: [], tags: [], titles: [], characters: [] };
+  const imageSize: ColInterface = { s:6, m:4, xl:3 };
+  const tagTypes = ['artist', 'tags', 'titles', 'characters'];
 
-  let allTags: any;
+  $: {
+    tagTypes.map((tagType)=>{
+      const pluckedTags = $entities.map((entity) => { return entity[tagType] });
+      const flatenTags = pluckedTags.flat();
+      if (flatenTags.length > 0 ) {
+        const uniqTags = [...new Map(flatenTags.map(item => [item.id, item])).values()];
+        allTags[tagType] = uniqTags;
+      }
 
-  $: allTags = {
-      artists:    $entities.map((entity) => { return entity.artist }),
-      tags:       $entities.map((entity) => { return entity.tags }).flat(),
-      titles:     $entities.map((entity) => { return entity.titles }).flat(),
-      characters: $entities.map((entity) => { return entity.characters }).flat(),
-    }
-
-  function onClick(){
-    console.log({ $entities, $tags, allTags })
+    })
   }
+
 </script>
 
 {#if $entities}
@@ -38,35 +40,23 @@
         </Row>
     </Col>
     <Col s={12} l={3} className="pull-l9">
-      {#if allTags.artists}
-        <p on:click={onClick}>Artists</p>
-        {#each allTags.artists as tag (tag)}
-          {tag}
-        {/each}
-      {/if}
-
-      {#if allTags.titles}
-        <p>Titles</p>
-        {#each allTags.titles as tag (tag)}
-          {tag}
-        {/each}
-      {/if}
-
-      {#if allTags.characters}
-        <p>Characters</p>
-        {#each allTags.characters as tag (tag)}
-          {tag}
-        {/each}
-      {/if}
-
-      {#if allTags.tags}
-        <p>Tags</p>
-        {#each allTags.tags as tag (tag)}
-          {tag}
-        {/each}
-      {/if}
+      {#each tagTypes as tagType (tagType)}
+        {#if allTags[tagType].length > 0}
+          <p class="tag_header">{tagType}</p>
+          <ul>
+            {#each allTags[tagType] as tag (tag)}
+              <li><a href={"/"}>{tag.name}</a></li>
+            {/each}
+          </ul>
+        {/if}
+      {/each}
     </Col>
   </Row>
 {:else}
   <Preloader/>
 {/if}
+
+<style lang="sass">
+  .tag_header
+    text-transform: capitalize
+</style>
