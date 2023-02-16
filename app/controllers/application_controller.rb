@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::API
   include JsonWebToken
-  before_action :set_object, only: %i[ show update destroy ]
+  before_action :set_object, only: %i[show update destroy]
   before_action :authenticate_request
 
   def index
@@ -31,7 +33,7 @@ class ApplicationController < ActionController::API
 
   def destroy
     @object.destroy
-    render json: '', status: :ok
+    render json: "", status: :ok
   end
 
   private
@@ -43,10 +45,10 @@ class ApplicationController < ActionController::API
 
   def authenticate_request
     header = request.headers["Authorization"]
-    token = header.split(" ").last if header
+    token = header.split.last if header
     decoded = jwt_decode(token)
   rescue JWT::DecodeError
-    render json: { error: 'Unauthorized' }, status: :unauthorized
+    render json: { error: "Unauthorized" }, status: :unauthorized
   else
     @current_user = User.find(decoded[:user_id])
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   require "securerandom"
   mount_uploader :avatar, AvatarUploader

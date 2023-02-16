@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::AuthenticationController < ApplicationController
   skip_before_action :authenticate_request
 
@@ -5,7 +7,7 @@ class Api::AuthenticationController < ApplicationController
   def sign_up
     @user = User.new(user_params)
     if @user.save
-      render json: { user: @user, token: token }, status: :created
+      render json: { user: @user, token: }, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -15,9 +17,9 @@ class Api::AuthenticationController < ApplicationController
   def sign_in
     @user = User.find_by_email(params[:email])
     if @user&.authenticate(params[:password])
-      render json: { token: token }, status: :ok
+      render json: { token: }, status: :ok
     else
-      render json: { error: 'Unauthorized' }, status: :unauthorized
+      render json: { error: "Unauthorized" }, status: :unauthorized
     end
   end
 

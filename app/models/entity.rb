@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Entity < ApplicationRecord
   mount_uploader :file, FileUploader
 
