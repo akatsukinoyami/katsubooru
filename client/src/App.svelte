@@ -4,7 +4,13 @@
   import Navbar from './partials/Navbar.svelte';
   import Main from './partials/Main.svelte';
   import Footer from './partials/Footer.svelte';
+
+  import { title } from "./stores";
 </script>
+
+<svelte:head>
+  <title>{$title}</title>
+</svelte:head>
 
 <Router>
   <Navbar/>
@@ -19,7 +25,4 @@
     display: flex
     min-height: 100vh
     flex-direction: column
-
-  :global(main)
-    flex: 1 0 auto
 </style>
