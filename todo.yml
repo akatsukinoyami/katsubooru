@@ -1,0 +1,12 @@
+todo:
+  - FE:
+    -
+  - BE:
+    - Fix controllers to better answers
+    - Create endpoint for deleting tag from entity
+    - Rename tags to other name
+made:
+  - FE:
+    -
+  - BE:
+    -
