@@ -2,6 +2,8 @@
 
 class User < ApplicationRecord
   require "securerandom"
+  include JsonWebToken
+
   mount_uploader :avatar, AvatarUploader
 
   has_secure_password
@@ -13,6 +15,9 @@ class User < ApplicationRecord
 
   def as_json(options = {})
     options[:except] = %i[password_digest]
-    super(options)
+    hash = super(options)
+
+    hash["token"] = jwt_encode(user_id: self.id)
+    hash
   end
 end
