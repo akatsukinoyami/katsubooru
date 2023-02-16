@@ -14,12 +14,14 @@ gem "pg", "~> 1.1"                    # Use postgresql as the database for Activ
 gem "puma", "~> 5.0"                  # Use the Puma web server [https://github.com/puma/puma]
 gem "rack-cors"                       # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem "rails", "~> 7.0.4", ">= 7.0.4.2" # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem "rswag", "~> 2.8"
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem "kredis" # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw] # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "pry", "~> 0.14.2"
+  gem "rspec-rails", "~> 6.0"
 end
 
 group :development do

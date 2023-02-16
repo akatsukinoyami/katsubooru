@@ -4,10 +4,13 @@
 
 require_relative "config/environment"
 
-puts "\n--- Delete old build of frontend before new build ---"
+puts "\n--- Saving API documentation ---"
+`rails rswag:specs:swaggerize`
+
+puts "\n--- Deleting old build of frontend before new build ---"
 `cd public && rm -rf build`
 
-puts "\n--- Build frontend before server start ---"
+puts "\n--- Building frontend before server start ---"
 `cd client && yarn && yarn build`
 puts "\n"
 

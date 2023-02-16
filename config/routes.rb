@@ -13,5 +13,8 @@ Rails.application.routes.draw do
     post '/auth/sign_up', to: 'authentication#sign_up'
   end
 
+  mount Rswag::Ui::Engine => '/api'
+  mount Rswag::Api::Engine => '/api'
+
   match "*path", to: "application#fallback_index_html", via: :all
 end

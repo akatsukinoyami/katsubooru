@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
   create_table "entities", force: :cascade do |t|
     t.string "file", null: false
     t.string "link"
-    t.integer "rating", default: 3, null: false
+    t.integer "rating", default: 0, null: false
     t.bigint "user_id"
     t.bigint "origin_id"
     t.bigint "author_id"
