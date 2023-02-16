@@ -15,7 +15,10 @@ class Api::UsersController < Api::ApiController
     if @user.update(object_params)
       render json: @user, status: :ok
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render(
+        json: { errors: @user.errors },
+        status: :unprocessable_entity
+      )
     end
   end
 
