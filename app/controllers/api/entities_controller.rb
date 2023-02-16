@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Api::EntitiesController < Api::ApiController
-
   def create
     @object = model.new(object_params)
     @object.user = @current_user
