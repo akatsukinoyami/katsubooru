@@ -8,6 +8,7 @@ import replaceHtmlVars  from "rollup-plugin-replace-html-vars";
 import svelte           from "rollup-plugin-svelte";
 import { terser }       from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
+import { sass }         from "svelte-preprocess-sass";
 
 const production = !process.env.ROLLUP_WATCH;
 const fingerprint = new Date().valueOf()
@@ -61,10 +62,7 @@ export default {
 		svelte({
 			preprocess: sveltePreprocess({
         sourceMap: !production,
-        sass: {
-          sync: true,
-          implementation: require('sass'),
-        },
+        style: sass(),
       }),
       compilerOptions: {
         dev: !production,             // enable run-time checks when not in production

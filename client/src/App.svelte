@@ -12,6 +12,8 @@
     <Navbar/>
   </TopAppBar>
   <AutoAdjust {topAppBar}>
+    <aside></aside>
+    <main></main>
   </AutoAdjust>
 </Router>
 
