@@ -14,6 +14,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "artists", force: :cascade do |t|
+    t.string "name", null: false
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "title_id"
+    t.index ["title_id"], name: "index_characters_on_title_id"
+  end
+
   create_table "characters_entities", id: false, force: :cascade do |t|
     t.bigint "entity_id", null: false
     t.bigint "character_id", null: false
@@ -22,20 +32,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
   create_table "entities", force: :cascade do |t|
     t.string "file", null: false
     t.string "link"
+    t.integer "media_type", default: 0, null: false
     t.integer "rating", default: 0, null: false
+    t.integer "origin", default: 0, null: false
     t.bigint "user_id"
-    t.bigint "origin_id"
-    t.bigint "author_id"
+    t.bigint "artist_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_entities_on_author_id"
-    t.index ["origin_id"], name: "index_entities_on_origin_id"
+    t.index ["artist_id"], name: "index_entities_on_artist_id"
     t.index ["user_id"], name: "index_entities_on_user_id"
   end
 
-  create_table "entities_generals", id: false, force: :cascade do |t|
+  create_table "entities_tags", id: false, force: :cascade do |t|
     t.bigint "entity_id", null: false
-    t.bigint "general_id", null: false
+    t.bigint "tag_id", null: false
   end
 
   create_table "entities_titles", id: false, force: :cascade do |t|
@@ -44,17 +54,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
   end
 
   create_table "tags", force: :cascade do |t|
-    t.string "type"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name", null: false
+  end
+
+  create_table "titles", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "media_type", default: 0, null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
-    t.string "avatar"
-    t.string "email"
+    t.string "email", null: false
     t.string "password_digest"
+    t.string "avatar"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
