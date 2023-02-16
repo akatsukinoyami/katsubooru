@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Api::AuthenticationController < ApplicationController
-  skip_before_action :authenticate_request
+  include JsonWebToken
 
-  # POST /auth/sign_up
+  # POST /api/auth/sign_up
   def sign_up
     @user = User.new(user_params)
     if @user.save
@@ -13,7 +13,7 @@ class Api::AuthenticationController < ApplicationController
     end
   end
 
-  # POST /auth/sign_in
+  # POST /api/auth/sign_in
   def sign_in
     @user = User.find_by_email(params[:email])
     if @user&.authenticate(params[:password])
