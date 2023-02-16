@@ -6,24 +6,72 @@ info:
 paths:
   "/api/auth/sign_in":
     post:
-      summary: Sign in
+      summary: sign_in
+      tags:
+      - Authentication API
+      description: Returns JWT token and user object after authentication
+      parameters: []
       responses:
         '200':
-          description: successful
+          description: Signed in successfully
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
   "/api/auth/sign_up":
     post:
-      summary: Sign up
+      summary: sign_up authentication
+      tags:
+      - Authentication API
+      description: Returns JWT token and user object after registration
+      parameters: []
       responses:
-        '200':
-          description: successful
+        '201':
+          description: Signed up successfully
+        '422':
+          description: Cannot sign up due to errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - email
+              - password
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                avatar:
+                  type: string
+                  format: binary
   "/api/entities":
     get:
       summary: list entities
+      tags:
+      - Entity API
       responses:
         '200':
           description: successful
     post:
       summary: create entity
+      tags:
+      - Entity API
       responses:
         '200':
           description: successful
@@ -37,36 +85,48 @@ paths:
         type: string
     get:
       summary: show entity
+      tags:
+      - Entity API
       responses:
         '200':
           description: successful
     patch:
       summary: update entity
+      tags:
+      - Entity API
       responses:
         '200':
           description: successful
     put:
       summary: update entity
+      tags:
+      - Entity API
       responses:
         '200':
           description: successful
     delete:
       summary: delete entity
+      tags:
+      - Entity API
       responses:
         '200':
           description: successful
-  "/api/tags":
+  "/api/tags/artists":
     get:
-      summary: list tags
+      summary: list artists
+      tags:
+      - Tags API
       responses:
         '200':
           description: successful
     post:
-      summary: create tag
+      summary: create artist
+      tags:
+      - Tags API
       responses:
         '200':
           description: successful
-  "/api/tags/{id}":
+  "/api/tags/artists/{id}":
     parameters:
     - name: id
       in: path
@@ -74,29 +134,144 @@ paths:
       required: true
       schema:
         type: string
-    get:
-      summary: show tag
+    patch:
+      summary: update artist
+      tags:
+      - Tags API
       responses:
         '200':
           description: successful
+    put:
+      summary: update artist
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+  "/api/tags/characters":
+    get:
+      summary: list characters
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create character
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+  "/api/tags/characters/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update character
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update character
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+  "/api/tags/tags":
+    get:
+      summary: list tags
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create tag
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+  "/api/tags/tags/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
     patch:
       summary: update tag
+      tags:
+      - Tags API
       responses:
         '200':
           description: successful
     put:
       summary: update tag
+      tags:
+      - Tags API
       responses:
         '200':
           description: successful
-    delete:
-      summary: delete tag
+  "/api/tags/titles":
+    get:
+      summary: list titles
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create title
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+  "/api/tags/titles/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update title
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update title
+      tags:
+      - Tags API
+      responses:
+        '200':
+          description: successful
+  "/api/tags":
+    get:
+      summary: list tags
+      tags:
+      - Tags API
       responses:
         '200':
           description: successful
   "/api/users":
     get:
       summary: list users
+      tags:
+      - Users API
       responses:
         '200':
           description: successful
@@ -110,21 +285,29 @@ paths:
         type: string
     get:
       summary: show user
+      tags:
+      - Users API
       responses:
         '200':
           description: successful
     patch:
       summary: update user
+      tags:
+      - Users API
       responses:
         '200':
           description: successful
     put:
       summary: update user
+      tags:
+      - Users API
       responses:
         '200':
           description: successful
     delete:
       summary: delete user
+      tags:
+      - Users API
       responses:
         '200':
           description: successful
