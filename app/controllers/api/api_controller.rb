@@ -2,11 +2,15 @@
 
 class Api::ApiController < ApplicationController
   include JsonWebToken
+  include Pagy::Backend
+
   before_action :set_object, only: %i[show update destroy]
   before_action :authenticate_request
+  after_action :pagination_headers, only: %i[index]
 
   def index
-    render json: model.all, status: :ok
+    @pagy, @objects = pagy(model.all)
+    render json: @objects, status: :ok
   end
 
   def show
@@ -41,5 +45,9 @@ class Api::ApiController < ApplicationController
     render json: { error: "Unauthorized" }, status: :unauthorized
   else
     @current_user = User.find(decoded[:user_id])
+  end
+
+  def pagination_headers
+    pagy_headers_merge(@pagy) if @pagy
   end
 end
