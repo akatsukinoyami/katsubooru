@@ -8,6 +8,7 @@ ruby "3.1.3"
 gem "bcrypt", "~> 3.1.7"              # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bootsnap", require: false        # Reduces boot times through caching; required in config/boot.rb
 gem "carrierwave", "~> 2.2"           # File storing for rails app
+# for carrierwave: (apt|brew) install imagemagick || apk add --no-cache file imagemagick
 gem "image_hash", "~> 1.0"            # Simple Ruby library for calculating a perceptual hash of images
 gem "jbuilder"                        # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jwt", "~> 2.7"                   # Use Json Web Token (JWT) for token based authentication
