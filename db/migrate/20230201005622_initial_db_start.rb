@@ -28,7 +28,7 @@ class InitialDbStart < ActiveRecord::Migration[7.0]
     end
 
     create_join_table :entities, :titles
-    create_join_table :entities, :charachters
+    create_join_table :entities, :characters
     create_join_table :entities, :generals
   end
 end

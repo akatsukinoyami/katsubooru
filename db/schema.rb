@@ -14,9 +14,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "charachters_entities", id: false, force: :cascade do |t|
+  create_table "characters_entities", id: false, force: :cascade do |t|
     t.bigint "entity_id", null: false
-    t.bigint "charachter_id", null: false
+    t.bigint "character_id", null: false
   end
 
   create_table "entities", force: :cascade do |t|

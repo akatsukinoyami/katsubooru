@@ -15,14 +15,14 @@ class Api::EntitiesController < Api::ApiController
   private
 
   def model
-    Entity # .includes(:origin, :author, :title, :character, :general)
+    Entity.left_joins(:origin, :author, :titles, :characters, :generals)
   end
 
   # Only allow a list of trusted parameters through.
   def object_params
     params.permit(
       :id, :file, :link, :author_id, :origin_id,
-      title_ids: [], charachter_ids: [], general_ids: []
+      title_ids: [], character_ids: [], general_ids: []
     )
   end
 end
