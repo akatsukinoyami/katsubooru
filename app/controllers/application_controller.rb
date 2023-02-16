@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include JsonWebToken
   before_action :set_object, only: %i[ show update destroy ]
   before_action :authenticate_request
 
@@ -44,6 +45,9 @@ class ApplicationController < ActionController::API
     header = request.headers["Authorization"]
     token = header.split(" ").last if header
     decoded = jwt_decode(token)
+  rescue JWT::DecodeError
+    render json: { error: 'Unauthorized' }, status: :unauthorized
+  else
     @current_user = User.find(decoded[:user_id])
   end
 end
