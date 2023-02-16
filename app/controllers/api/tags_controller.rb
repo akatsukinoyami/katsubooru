@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::TagsController < ApplicationController
+class Api::TagsController < Api::ApiController
   private
 
   def model
@@ -9,6 +9,6 @@ class Api::TagsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def object_params
-    params.require(:tag).permit(:type, :name)
+    params.permit(:type, :name)
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::UsersController < ApplicationController
+class Api::UsersController < Api::ApiController
   private
 
   def model
