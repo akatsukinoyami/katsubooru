@@ -13,16 +13,6 @@ class Api::ApiController < ApplicationController
     render json: @object, status: :ok
   end
 
-  def create
-    @object = model.new(object_params)
-
-    if @object.save
-      render json: @object, status: :created
-    else
-      render json: @object.errors, status: :unprocessable_entity
-    end
-  end
-
   def update
     if @object.update(object_params)
       render json: @object, status: :ok
