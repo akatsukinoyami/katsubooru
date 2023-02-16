@@ -1,7 +1,7 @@
 import commonjs         from "@rollup/plugin-commonjs";
 import resolve          from "@rollup/plugin-node-resolve";
 import typescript       from "@rollup/plugin-typescript";
-// import copy          from "rollup-plugin-copy";
+import copy             from "rollup-plugin-copy";
 import css              from "rollup-plugin-css-only";
 import del              from "rollup-plugin-delete";
 import livereload       from "rollup-plugin-livereload";
@@ -11,13 +11,20 @@ import { terser }       from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
 
 
-const production = !process.env.ROLLUP_WATCH;
+const
+  production = !process.env.ROLLUP_WATCH,
+  unixTime = new Date().valueOf();
 
-const unixTime = new Date().valueOf()
 function fingerprint(name) {
   return `${unixTime}.${name}`
 }
 
+function materialize(fileFormat){
+  return {
+    src: `node_modules/materialize-css/dist/${fileFormat}/materialize.min.${fileFormat}`,
+    dest: "../public/build",
+    rename: fingerprint(`materialize.min.${fileFormat}`) }
+}
 function serve() {
 	let server;
 
@@ -38,7 +45,6 @@ function serve() {
 		}
 	};
 }
-
 export default {
 	input: "src/main.ts",
 	output: {
@@ -89,13 +95,7 @@ export default {
     }),
 
     // Copy files from node_modules to build
-    // copy({ targets: [
-    //   {
-    //     src: 'node_modules/material-dynamic-colors/dist/cdn/material-dynamic-colors.min.js',
-    //     dest: '../public/build',
-    //     rename: fingerprint('material_dynamic_colors.min.js'),
-    //   },
-    // ], verbose: true }),
+    copy({ targets: [materialize('js'), materialize('css')], verbose: true }),
 
 		!production && serve(),                 // In dev mode, call `npm run start` once the bundle has been generated
 		!production && livereload("../public"), // Watch the `public` directory and refresh the browser on changes when not in production
