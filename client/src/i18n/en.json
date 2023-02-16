@@ -1,0 +1,7 @@
+{
+  "succesful": {
+    "sign_in": "You signed in succesfully!",
+    "sign_up": "You signed up succesfully!",
+    "sign_out": "You signed out succesfully!"
+  }
+}

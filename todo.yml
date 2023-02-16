@@ -9,6 +9,7 @@ todo:
         - Adding image as file
         - Adding image from other resource
         - For comparison of similar images
+        - Batch upload of images
       - Edit:
         - Button for deletion
     - Tags:
@@ -16,11 +17,16 @@ todo:
       - Edit
   - FE:
   - BE:
+    - Create model for "Entities collection"
     - Rename tags to other name
 
 made:
   - FE:
-    -
+    - 2023.02.16:
+      - Implemented authentication and registration
+      - Implemented errors and notices
+    - 2023.02.15:
+      - End choosing CSS framework, stopped on materialize
   - BE:
     - 2023.02.05:
       - Added image hashing and uniqness for hashes

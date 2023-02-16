@@ -1,9 +1,6 @@
 <script lang="ts">
-  import { Router } from 'svelte-navigator';
-
-  import Navbar from './partials/Navbar.svelte';
-  import Main from './partials/Main.svelte';
-  import Footer from './partials/Footer.svelte';
+  import Layout from './partials/Layout.svelte';
+  import Routes from './partials/Routes.svelte';
 
   import { title } from "./stores";
 </script>
@@ -12,11 +9,9 @@
   <title>{$title}</title>
 </svelte:head>
 
-<Router>
-  <Navbar/>
-  <Main/>
-  <Footer/>
-</Router>
+<Layout>
+  <Routes/>
+</Layout>
 
 <style lang="sass">
   :global(html),
