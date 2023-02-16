@@ -23,6 +23,9 @@ class Entity < ApplicationRecord
   end
 
   def set_file_hash
-    self.file_hash = ImageHash.new(Dir.pwd + "/public" + self.file.url).hash
+    if self.file.url
+      path = Dir.pwd + "/public" + self.file.url
+      self.file_hash = ImageHash.new(path).hash
+    end
   end
 end
