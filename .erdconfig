@@ -4,22 +4,27 @@ attributes:
   - foreign_keys
   - inheritance
   - timestamps
-disconnected: true
+
 filename: erd
 filetype: pdf
-indirect: false
-inheritance: false
+
+disconnected: true
+indirect: true
+polymorphism: false
+inheritance: true
+
 markup: true
 notation: bachman
 orientation: vertical
-polymorphism: false
 title: true
 sort: true
 warn: true
+prepend_primary: true
+
 exclude: null
 only: null
+
 only_recursion_depth: null
-prepend_primary: false
 cluster: false
 splines: spline
 fonts:
