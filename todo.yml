@@ -11,6 +11,7 @@ made:
     -
   - BE:
     - 2023.02.04
+      - Deleted CSRF due to it's unneeded with JWT auth
       - Added returning CSRF token in request headers
     - 2023.02.03:
       - Show only "safe" entities if unauthorized

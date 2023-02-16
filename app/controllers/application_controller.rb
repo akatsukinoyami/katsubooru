@@ -2,10 +2,8 @@
 
 class ApplicationController < ActionController::API
   include JsonWebToken
-  include ActionController::RequestForgeryProtection
 
   before_action :authenticate_request, except: %i[index]
-  after_action  :add_csrf_to_headers
 
   def fallback_index_html
     render file: "public/index.html"
@@ -34,9 +32,5 @@ class ApplicationController < ActionController::API
       json: { errors: [I18n.t(error)] },
       status: :unauthorized
     )
-  end
-
-  def add_csrf_to_headers
-    response.headers["Form-Authenticity-Token"] = form_authenticity_token
   end
 end
