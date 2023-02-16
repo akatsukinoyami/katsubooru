@@ -1,14 +1,6 @@
 class Api::CollectionsController < ApplicationController
   before_action :set_collection, only: %i[ show update destroy ]
 
-  # GET /collections
-  def index
-    collections = Collection.all
-
-    @pagy, @collections = pagy(collections, items: object_params[:items])
-    render_200(@collections)
-  end
-
   # GET /collections/1
   def show
     render_200(@collection)
