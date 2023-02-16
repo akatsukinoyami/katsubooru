@@ -5,7 +5,7 @@
   export let className = '';
 </script>
 
-<footer class="page-footer {className}">
+<footer class="page-footer light-blue accent-4 {className}">
   <div class="footer-copyright">
     <Container>
 	    <slot><Preloader/></slot>

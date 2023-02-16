@@ -4,6 +4,7 @@
 
   export let
     className: string = '',
+    style = '',
     s: columnSizeType = -1,
     m: columnSizeType = -1,
     l: columnSizeType = -1,
@@ -14,6 +15,6 @@
   }
 </script>
 
-<div class="col {sizeClass('s', s)}{sizeClass('m', m)}{sizeClass('l', l)}{sizeClass('xl', xl)} {className}">
+<div class="col {sizeClass('s', s)}{sizeClass('m', m)}{sizeClass('l', l)}{sizeClass('xl', xl)} {className}" style={style}>
 	<slot><Preloader/></slot>
 </div>
