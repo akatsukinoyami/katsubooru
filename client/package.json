@@ -15,6 +15,7 @@
     "@rollup/plugin-typescript": "^8.0.0",
     "@tsconfig/svelte": "^2.0.0",
     "classnames": "^2.3.2",
+    "materialize-css": "^1.0.0-rc.2",
     "postcss": "^8.4.21",
     "rollup": "^2.3.4",
     "rollup-plugin-copy": "^3.4.0",
