@@ -9,7 +9,7 @@ class Api::AuthenticationController < ApplicationController
 
     if @user.save
       render(
-        json: { user: @user, token: },
+        json: { user: @user, token: "Bearer #{token}"},
         status: :created
       )
     else
@@ -26,7 +26,7 @@ class Api::AuthenticationController < ApplicationController
 
     if @user&.authenticate(params[:password])
       render(
-        json: { user: @user, token: },
+        json: { user: @user, token: "Bearer #{token}"},
         status: :ok
       )
     else
