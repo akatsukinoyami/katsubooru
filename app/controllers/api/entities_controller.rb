@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-class Api::EntitiesController < Api::ApiController
+class Api::EntitiesController < ApplicationController
   include Pagy::Backend
 
-  skip_before_action :authenticate_request, only: %i[index]
-  before_action      :authenticate,         only: %i[index]
-  before_action      :set_object,           only: %i[show update destroy]
-  after_action       :pagination_headers,   only: %i[index]
+  before_action :authenticate,       only: %i[index]
+  before_action :set_object,         only: %i[show update destroy]
+  after_action  :pagination_headers, only: %i[index]
 
   def index
     entities = @current_user ? Entity.all : Entity.safe

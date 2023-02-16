@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::TagsController < Api::ApiController
+class Api::TagsController < ApplicationController
   def index
     response = {
       artists: Artist.all,

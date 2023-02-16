@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::AuthenticationController < ApplicationController
-  include JsonWebToken
+  skip_before_action :authenticate_request
 
   # POST /api/auth/sign_up
   def sign_up

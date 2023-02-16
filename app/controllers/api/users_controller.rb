@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::UsersController < Api::ApiController
+class Api::UsersController < ApplicationController
   before_action :set_object, only: %i[show update destroy]
 
   def index
