@@ -11,6 +11,7 @@ gem "carrierwave", "~> 2.2"           # File storing for rails app
 gem "jbuilder"                        # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jwt", "~> 2.7"                   # Use Json Web Token (JWT) for token based authentication
 gem "pg", "~> 1.1"                    # Use postgresql as the database for Active Record
+gem "pp", "~> 0.4.0"                  # PrettyPrint
 gem "puma", "~> 5.0"                  # Use the Puma web server [https://github.com/puma/puma]
 gem "rack-cors"                       # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem "rails", "~> 7.0.4", ">= 7.0.4.2" # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
