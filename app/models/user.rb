@@ -10,4 +10,8 @@ class User < ApplicationRecord
   validates :password, presence: true
 
   has_many :entities
+
+  def as_json(options = nil)
+    super({ except: %i[password_digest] }.merge(options || {}))
+  end
 end
