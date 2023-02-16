@@ -12,7 +12,7 @@ class InitialDbStart < ActiveRecord::Migration[7.0]
     create_table :entities do |t|
       t.string :file, null: false
       t.string :link
-      t.integer :rating, null: false, default: 3
+      t.integer :rating, null: false, default: 0
 
       t.references :user
       t.references :origin
