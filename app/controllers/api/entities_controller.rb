@@ -31,8 +31,18 @@ class Api::EntitiesController < ApplicationController
       )
     end
   rescue ActiveRecord::NotNullViolation => e
+    error = e.to_s.split('ERROR:  ').last.split('DETAIL').first
     render(
-      json: { errors: [e] },
+      json: { errors: [error] },
+      status: :unprocessable_entity
+    )
+
+  rescue ActiveRecord::RecordNotUnique
+    render(
+      json: {
+        data: Entity.where(file_hash: @entity.file_hash),
+        errors: [t('errors.entity_is_not_unique')]
+      },
       status: :unprocessable_entity
     )
   end

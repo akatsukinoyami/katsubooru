@@ -27,6 +27,14 @@ class Api::TagsController < ApplicationController
         status: :unprocessable_entity
       )
     end
+  rescue ActiveRecord::RecordNotUnique
+    render(
+      json: {
+        data: model.where(name: @tag.name),
+        errors: [t('errors.tag_is_not_unique', tag: model.name)]
+      },
+      status: :unprocessable_entity
+    )
   end
 
   def update
