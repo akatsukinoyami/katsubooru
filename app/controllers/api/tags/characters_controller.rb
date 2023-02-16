@@ -12,7 +12,7 @@ class Api::Tags::CharactersController < Api::TagsController
       render json: @character, status: :created
     else
       render(
-        json: { errors: @character.errors },
+        json: { errors: @character.errors.full_messages },
         status: :unprocessable_entity
       )
     end
@@ -25,7 +25,7 @@ class Api::Tags::CharactersController < Api::TagsController
       render json: @character, status: :ok
     else
       render(
-        json: { errors: @character.errors },
+        json: { errors: @character.errors.full_messages },
         status: :unprocessable_entity
       )
     end

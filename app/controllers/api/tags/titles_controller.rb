@@ -12,7 +12,7 @@ class Api::Tags::TitlesController < Api::TagsController
       render json: @title, status: :created
     else
       render(
-        json: { errors: @title.errors },
+        json: { errors: @title.errors.full_messages },
         status: :unprocessable_entity
       )
     end
@@ -25,7 +25,7 @@ class Api::Tags::TitlesController < Api::TagsController
       render json: @title, status: :ok
     else
       render(
-        json: { errors: @title.errors },
+        json: { errors: @title.errors.full_messages },
         status: :unprocessable_entity
       )
     end

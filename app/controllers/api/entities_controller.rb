@@ -26,7 +26,7 @@ class Api::EntitiesController < ApplicationController
       render json: @entity, status: :ok
     else
       render(
-        json: { errors: @entity.errors },
+        json: { errors: @entity.errors.full_messages },
         status: :unprocessable_entity
       )
     end
@@ -42,7 +42,7 @@ class Api::EntitiesController < ApplicationController
       render json: @entity, status: :ok
     else
       render(
-        json: { errors: @entity.errors },
+        json: { errors: @entity.errors.full_messages },
         status: :unprocessable_entity
       )
     end
