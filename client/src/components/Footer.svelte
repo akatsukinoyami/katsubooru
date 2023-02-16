@@ -1,9 +1,14 @@
 <script lang="ts">
+  import Container from "./Container.svelte";
   import Preloader from "./Preloader.svelte";
 
   export let className = '';
 </script>
 
 <footer class="page-footer {className}">
-	<slot><Preloader/></slot>
+  <div class="footer-copyright">
+    <Container>
+	    <slot><Preloader/></slot>
+    </Container>
+  </div>
 </footer>

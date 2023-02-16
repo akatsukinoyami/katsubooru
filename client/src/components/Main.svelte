@@ -11,4 +11,5 @@
 <style lang="sass">
   main
     flex: 1 0 auto
+    padding: 10px
 </style>
