@@ -1,18 +1,22 @@
 import commonjs         from "@rollup/plugin-commonjs";
 import resolve          from "@rollup/plugin-node-resolve";
 import typescript       from "@rollup/plugin-typescript";
+// import copy          from "rollup-plugin-copy";
 import css              from "rollup-plugin-css-only";
+import del              from "rollup-plugin-delete";
 import livereload       from "rollup-plugin-livereload";
 import replaceHtmlVars  from "rollup-plugin-replace-html-vars";
 import svelte           from "rollup-plugin-svelte";
 import { terser }       from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
-import { sass }         from "svelte-preprocess-sass";
-//import copy           from "rollup-plugin-copy";
 
 
 const production = !process.env.ROLLUP_WATCH;
-const fingerprint = new Date().valueOf()
+
+const unixTime = new Date().valueOf()
+function fingerprint(name) {
+  return `${unixTime}.${name}`
+}
 
 function serve() {
 	let server;
@@ -41,7 +45,7 @@ export default {
 		sourcemap: true,
 		format: "iife",
 		name: "app",
-    entryFileNames: `bundle.${fingerprint}.js`,
+    entryFileNames: fingerprint('bundle.js'),
     dir: "../public/build", // Path for storing prebuilt bundle files
 	},
 	plugins: [
@@ -55,24 +59,43 @@ export default {
 		typescript({ sourceMap: true, inlineSources: !production }),
 
     // we"ll extract any component CSS out into a separate file - better for performance
-    css({ output: `bundle.${fingerprint}.css`, sourceMap: true }),
+    css({
+      output: fingerprint('bundle.css'),
+      sourceMap: true
+    }),
 
     // Replace fingerprints of prebuilt bundle in index.html
-    replaceHtmlVars({ files: "../public/index.html", from: /[0-9]{13,13}/gi, to: fingerprint }),
+    replaceHtmlVars({
+      files: "../public/index.html",
+      from: /[0-9]{13,13}/gi,
+      to: unixTime
+    }),
 
 		svelte({
 			preprocess: sveltePreprocess({
-        sourceMap: !production,
-        style: sass(),
+        sourceMap: true,
       }),
       compilerOptions: {
-        dev: !production,             // enable run-time checks when not in production
-        enableSourcemap: !production  // Set to  true if you want them
+        dev: !production,      // enable run-time checks when not in production
+        enableSourcemap: true  // Set to  true if you want them
       }
 		}),
 
+    // Delete old build
+    del({
+      targets: '../public/build/*',
+      force: true,
+      verbose: true,
+    }),
+
     // Copy files from node_modules to build
-    // copy({ targets: [], verbose: !production }),
+    // copy({ targets: [
+    //   {
+    //     src: 'node_modules/material-dynamic-colors/dist/cdn/material-dynamic-colors.min.js',
+    //     dest: '../public/build',
+    //     rename: fingerprint('material_dynamic_colors.min.js'),
+    //   },
+    // ], verbose: true }),
 
 		!production && serve(),                 // In dev mode, call `npm run start` once the bundle has been generated
 		!production && livereload("../public"), // Watch the `public` directory and refresh the browser on changes when not in production

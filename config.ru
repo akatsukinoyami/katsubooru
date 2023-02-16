@@ -7,9 +7,6 @@ require_relative "config/environment"
 puts "\n--- Saving API documentation ---"
 `rails rswag:specs:swaggerize`
 
-puts "\n--- Deleting old build of frontend before new build ---"
-`cd public && rm -rf build`
-
 puts "\n--- Building frontend before server start ---"
 `cd client && yarn && yarn build`
 puts "\n"
