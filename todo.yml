@@ -1,16 +1,31 @@
 todo:
+  - Pages:
+    - Images:
+      - Index:
+        - with pagination
+        - with tag-based search
+      - Show
+      - Add:
+        - Adding image as file
+        - Adding image from other resource
+        - For comparison of similar images
+      - Edit:
+        - Button for deletion
+    - Tags:
+      - Add
+      - Edit
   - FE:
-    -
   - BE:
-    - Fix controllers to better answers
-    - Create endpoint for deleting tag from entity
     - Rename tags to other name
 
 made:
   - FE:
     -
   - BE:
-    - 2023.02.04
+    - 2023.02.05:
+      - Added image hashing and uniqness for hashes
+      - Returning image with same hash if present
+    - 2023.02.04:
       - Deleted CSRF due to it's unneeded with JWT auth
       - Added returning CSRF token in request headers
     - 2023.02.03:
