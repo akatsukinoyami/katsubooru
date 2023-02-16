@@ -9,10 +9,13 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^5.0.0",
+    "@mdi/js": "^7.1.96",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
     "@tsconfig/svelte": "^2.0.0",
+    "postcss": "^8.4.21",
     "rollup": "^2.3.4",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-css-only": "^3.1.0",
@@ -24,6 +27,7 @@
     "smelte": "^1.1.8",
     "svelte": "^3.0.0",
     "svelte-check": "^2.0.0",
+    "svelte-materialify": "^0.3.11",
     "svelte-navigator": "^3.2.2",
     "svelte-preprocess": "^5.0.1",
     "svelte-preprocess-sass": "^2.0.1",
