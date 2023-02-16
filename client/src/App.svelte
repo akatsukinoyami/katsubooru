@@ -1,30 +1,18 @@
 <script lang="ts">
 	import { Router } from "svelte-navigator";
-  import TopAppBar, { AutoAdjust } from '@smui/top-app-bar';
-  import Navbar from "./components/Navbar.svelte";
+  import "smelte/src/tailwind.css" ;
 
-  let topAppBar: TopAppBar;
+  import Aside from "./components/Aside.svelte";
+  import Main from "./components/Main.svelte";
+  import Navbar from "./components/Navbar.svelte";
 </script>
 
 
 <Router primary={false}>
-  <TopAppBar bind:this={topAppBar} variant="short">
     <Navbar/>
-  </TopAppBar>
-  <AutoAdjust {topAppBar}>
-    <aside></aside>
-    <main></main>
-  </AutoAdjust>
+    <Aside />
+    <Main />
 </Router>
 
-
 <style lang="sass">
-  /* Hide everything above this component. */
-  :global(#smui-app),
-  :global(body),
-  :global(html)
-    display: block !important
-    height: auto !important
-    width: auto !important
-    position: static !important
 </style>

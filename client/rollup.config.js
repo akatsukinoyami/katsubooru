@@ -7,8 +7,10 @@ import livereload       from "rollup-plugin-livereload";
 import replaceHtmlVars  from "rollup-plugin-replace-html-vars";
 import svelte           from "rollup-plugin-svelte";
 import { terser }       from "rollup-plugin-terser";
+import smelte           from "smelte/rollup-plugin-smelte";
 import sveltePreprocess from "svelte-preprocess";
 import { sass }         from "svelte-preprocess-sass";
+
 
 const production = !process.env.ROLLUP_WATCH;
 const fingerprint = new Date().valueOf()
@@ -70,14 +72,28 @@ export default {
       }
 		}),
 
+    smelte({
+      purge: production,
+      output: `../public/build/global.${fingerprint}.css`, // it defaults to static/global.css which is probably what you expect in Sapper
+      postcss: [], // Your PostCSS plugins
+      whitelist: [], // Array of classnames whitelisted from purging
+      whitelistPatterns: [], // Same as above, but list of regexes
+      tailwind: {
+        colors: {
+          primary: "#b027b0",
+          secondary: "#009688",
+          error: "#f44336",
+          success: "#4caf50",
+          alert: "#ff9800",
+          blue: "#2196f3",
+          dark: "#212121"
+        }, // Object of colors to generate a palette from, and then all the utility classes
+        darkMode: true,
+      }
+    })
 
     // Copy files from node_modules to build
-    copy({
-      targets: [
-        { src: "node_modules/svelte-material-ui/bare.css", dest: "../public/build/", rename: `material_ui.${fingerprint}.css` }
-      ],
-      verbose: !production
-    }),
+    copy({ targets: [], verbose: !production }),
 
 		!production && serve(),               // In dev mode, call `npm run start` once the bundle has been generated
 		!production && livereload("public"),  // Watch the `public` directory and refresh the browser on changes when not in production
