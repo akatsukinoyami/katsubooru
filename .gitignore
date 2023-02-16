@@ -24,3 +24,6 @@
 
 # Ignore built frontend.
 /public/build/*
+
+# Ignore stored entities
+/public/uploads/*
