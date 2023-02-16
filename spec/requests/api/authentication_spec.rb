@@ -1,15 +1,14 @@
-require 'swagger_helper'
+# frozen_string_literal: true
 
-RSpec.describe 'Authentication API', type: :request do
+require "swagger_helper"
 
-  path '/api/auth/sign_in' do
-
-    post('Sign in') do
-      response(200, 'successful') do
-
+RSpec.describe "Authentication API", type: :request do
+  path "/api/auth/sign_in" do
+    post("Sign in") do
+      response(200, "successful") do
         after do |example|
           example.metadata[:response][:content] = {
-            'application/json' => {
+            "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }
@@ -19,14 +18,12 @@ RSpec.describe 'Authentication API', type: :request do
     end
   end
 
-  path '/api/auth/sign_up' do
-
-    post('Sign up') do
-      response(200, 'successful') do
-
+  path "/api/auth/sign_up" do
+    post("Sign up") do
+      response(200, "successful") do
         after do |example|
           example.metadata[:response][:content] = {
-            'application/json' => {
+            "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }

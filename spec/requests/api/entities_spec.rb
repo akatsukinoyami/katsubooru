@@ -1,15 +1,14 @@
-require 'swagger_helper'
+# frozen_string_literal: true
 
-RSpec.describe 'Entity API', type: :request do
+require "swagger_helper"
 
-  path '/api/entities' do
-
-    get('list entities') do
-      response(200, 'successful') do
-
+RSpec.describe "Entity API", type: :request do
+  path "/api/entities" do
+    get("list entities") do
+      response(200, "successful") do
         after do |example|
           example.metadata[:response][:content] = {
-            'application/json' => {
+            "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }
@@ -18,12 +17,11 @@ RSpec.describe 'Entity API', type: :request do
       end
     end
 
-    post('create entity') do
-      response(200, 'successful') do
-
+    post("create entity") do
+      response(200, "successful") do
         after do |example|
           example.metadata[:response][:content] = {
-            'application/json' => {
+            "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }
@@ -33,17 +31,17 @@ RSpec.describe 'Entity API', type: :request do
     end
   end
 
-  path '/api/entities/{id}' do
+  path "/api/entities/{id}" do
     # You'll want to customize the parameter types...
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+    parameter name: "id", in: :path, type: :string, description: "id"
 
-    get('show entity') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+    get("show entity") do
+      response(200, "successful") do
+        let(:id) { "123" }
 
         after do |example|
           example.metadata[:response][:content] = {
-            'application/json' => {
+            "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }
@@ -52,13 +50,13 @@ RSpec.describe 'Entity API', type: :request do
       end
     end
 
-    patch('update entity') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+    patch("update entity") do
+      response(200, "successful") do
+        let(:id) { "123" }
 
         after do |example|
           example.metadata[:response][:content] = {
-            'application/json' => {
+            "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }
@@ -67,13 +65,13 @@ RSpec.describe 'Entity API', type: :request do
       end
     end
 
-    put('update entity') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+    put("update entity") do
+      response(200, "successful") do
+        let(:id) { "123" }
 
         after do |example|
           example.metadata[:response][:content] = {
-            'application/json' => {
+            "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }
@@ -82,13 +80,13 @@ RSpec.describe 'Entity API', type: :request do
       end
     end
 
-    delete('delete entity') do
-      response(200, 'successful') do
-        let(:id) { '123' }
+    delete("delete entity") do
+      response(200, "successful") do
+        let(:id) { "123" }
 
         after do |example|
           example.metadata[:response][:content] = {
-            'application/json' => {
+            "application/json" => {
               example: JSON.parse(response.body, symbolize_names: true)
             }
           }

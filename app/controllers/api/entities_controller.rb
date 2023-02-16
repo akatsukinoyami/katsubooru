@@ -15,7 +15,7 @@ class Api::EntitiesController < Api::ApiController
   private
 
   def model
-    Entity
+    Entity # .includes(:origin, :author, :title, :character, :general)
   end
 
   # Only allow a list of trusted parameters through.
