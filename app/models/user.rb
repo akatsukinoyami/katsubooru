@@ -11,7 +11,8 @@ class User < ApplicationRecord
 
   has_many :entities
 
-  def as_json(options = nil)
-    super({ except: %i[password_digest] }.merge(options || {}))
+  def as_json(options = {})
+    options[:except] << %i[password_digest]
+    super(options)
   end
 end

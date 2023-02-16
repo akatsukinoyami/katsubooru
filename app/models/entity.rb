@@ -6,6 +6,7 @@ class Entity < ApplicationRecord
 
   belongs_to :user
   belongs_to :artist, optional: true
+  belongs_to :collection, optional: true
 
   has_and_belongs_to_many :characters,  class_name: "Character",  join_table: "characters_entities"
   has_and_belongs_to_many :titles,      class_name: "Title",      join_table: "entities_titles"
@@ -16,7 +17,7 @@ class Entity < ApplicationRecord
   enum :origin,     %i[origin_unknown telegram discord pixiv artstation danbooru gelbooru rule34]
 
   def as_json(options = {})
-    options[:include] = %i[artist titles characters tags]
+    options[:include] << %i[artist titles characters tags]
     hash = super(options)
     hash["file"]["thumb"] = hash.dig("file", "thumb", "url")
     hash

@@ -6,7 +6,8 @@ class Title < ApplicationRecord
 
   enum :media_type, %i[unknown game series movie cartoon anime hentai comic manga]
 
-  def as_json(options = nil)
-    super({ include: %i[characters] }.merge(options || {}))
+  def as_json(options = {})
+    options[:include] << %i[characters]
+    super(options)
   end
 end
