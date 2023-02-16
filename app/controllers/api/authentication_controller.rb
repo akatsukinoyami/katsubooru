@@ -6,20 +6,34 @@ class Api::AuthenticationController < ApplicationController
   # POST /api/auth/sign_up
   def sign_up
     @user = User.new(user_params)
+
     if @user.save
-      render json: { user: @user, token: }, status: :created
+      render(
+        json: { user: @user, token: },
+        status: :created
+      )
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render(
+        json: { errors: @user.errors },
+        status: :unprocessable_entity
+      )
     end
   end
 
   # POST /api/auth/sign_in
   def sign_in
     @user = User.find_by_email(params[:email])
+
     if @user&.authenticate(params[:password])
-      render json: { token: }, status: :ok
+      render(
+        json: { user: @user, token: },
+        status: :ok
+      )
     else
-      render json: { error: "Unauthorized" }, status: :unauthorized
+      render(
+        json: { errors: [I18n.t('errors.wrong_email_or_password')] },
+        status: :unauthorized
+      )
     end
   end
 
