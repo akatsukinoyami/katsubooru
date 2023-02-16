@@ -33,7 +33,7 @@ class Api::EntitiesController < ApplicationController
   rescue ActiveRecord::RecordNotUnique
     render_422({
       data: Entity.where(file_hash: @entity.file_hash),
-      errors: [t('errors.entity_is_not_unique')]
+      errors: [I18n.t('errors.entity_is_not_unique')]
     })
   end
 
