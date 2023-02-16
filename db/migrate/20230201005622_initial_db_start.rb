@@ -10,23 +10,25 @@ class InitialDbStart < ActiveRecord::Migration[7.0]
     end
 
     create_table :entities do |t|
-      t.string :type, null: false, default: 'picture'
       t.string :file, null: false
-
-      t.string :origin
-      t.string :origin_type
+      t.string :link
+      t.integer :rating, null: false, default: 3
 
       t.references :user
+      t.references :origin
+      t.references :author
       t.timestamps
     end
 
     create_table :tags do |t|
-      t.string :type
+      t.string :type # origin, author, title, charachter, general
       t.string :name
 
       t.timestamps
     end
 
-    create_join_table :entities, :tags
+    create_join_table :entities, :titles
+    create_join_table :entities, :charachters
+    create_join_table :entities, :generals
   end
 end

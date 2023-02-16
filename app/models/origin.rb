@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class Author < Tag
+class Origin < Tag
   has_many :entities
 end
