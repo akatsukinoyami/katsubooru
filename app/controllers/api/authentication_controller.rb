@@ -5,7 +5,8 @@ class Api::AuthenticationController < ApplicationController
 
   # POST /api/auth/sign_up
   def sign_up
-    @user = User.new(user_params)
+    required_params = params.require(:name, :email, :password)
+    @user = User.new(required_params)
 
     if @user.save
       render_201({ user: @user, token: "Bearer #{token}"})
@@ -16,9 +17,10 @@ class Api::AuthenticationController < ApplicationController
 
   # POST /api/auth/sign_in
   def sign_in
-    @user = User.find_by_email(params[:email])
+    required_params = params.require(:email, :password)
+    @user = User.find_by_email(required_params[:email])
 
-    if @user&.authenticate(params[:password])
+    if @user&.authenticate(required_params[:password])
       render_200({ user: @user, token: "Bearer #{token}"})
     else
       render_401({ errors: [t("errors.wrong_email_or_password")] })
@@ -29,10 +31,5 @@ class Api::AuthenticationController < ApplicationController
 
   def token
     jwt_encode(user_id: @user.id)
-  end
-
-  # Only allow a list of trusted parameters through.
-  def user_params
-    params.permit(:name, :email, :password)
   end
 end
