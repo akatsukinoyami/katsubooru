@@ -3,7 +3,7 @@
 class FileUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
+  include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
   storage :file
@@ -31,19 +31,32 @@ class FileUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
-  # version :thumb do
-  #   process resize_to_fit: [50, 50]
-  # end
+  version :thumb do
+    process resize_to_fit: [250, 250]
+  end
 
-  # Add an allowlist of extensions which are allowed to be uploaded.
+  # Add an allowlist of extensions which are allowed to be uploaded.Cbnefwbz cnhfiyfz
   # For images you might use something like this:
-  # def extension_allowlist
-  #   %w(jpg jpeg gif png)
-  # end
+  def extension_allowlist
+    %w(jpg jpeg gif png webp)
+  end
+
+  # The same thing could be done using content types. Let's say we need
+  # an uploader that accepts only images. This can be done like this
+  def content_type_allowlist
+    /image\//
+  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
+  def filename
+    if original_filename
+      path = @file.file
+      extension = path.split('.').last
+      image_hash = ImageHash.new(path).hash
+
+      @filename = [image_hash, extension].join('.')
+    end
+    @filename
+  end
 end
