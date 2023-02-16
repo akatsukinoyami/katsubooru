@@ -27,6 +27,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "rails-erd", "~> 1.7"           # Will generate a diagram based on your application's Active Record models
   gem "rubocop", "~> 1.44"
-  # gem "spring" # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  # gem "spring"                      # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
 end
