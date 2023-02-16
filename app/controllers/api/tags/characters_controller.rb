@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::Tags::CharactersController < Api::TagsController
   def index
     render json: Character.all, status: :ok

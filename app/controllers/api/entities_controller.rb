@@ -30,10 +30,9 @@ class Api::EntitiesController < ApplicationController
         status: :unprocessable_entity
       )
     end
-
-  rescue ActiveRecord::NotNullViolation => error
+  rescue ActiveRecord::NotNullViolation => e
     render(
-      json: { errors: [error] },
+      json: { errors: [e] },
       status: :unprocessable_entity
     )
   end
@@ -65,7 +64,7 @@ class Api::EntitiesController < ApplicationController
   def object_params
     params.permit(
       :id, :file, :link, :origin, :rating, :media_type, :items, :page,
-      :artist_id, title_ids: [], character_ids: [], tag_ids: [],
+      :artist_id, title_ids: [], character_ids: [], tag_ids: []
     )
   end
 

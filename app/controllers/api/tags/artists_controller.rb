@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::Tags::ArtistsController < Api::TagsController
   def index
     render json: Artist.all, status: :ok

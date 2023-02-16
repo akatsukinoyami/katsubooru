@@ -5,8 +5,15 @@ todo:
     - Fix controllers to better answers
     - Create endpoint for deleting tag from entity
     - Rename tags to other name
+
 made:
   - FE:
     -
   - BE:
-    -
+    - 2023.02.04
+      - Added returning CSRF token in request headers
+    - 2023.02.03:
+      - Show only "safe" entities if unauthorized
+      - Added DB diagram gem
+      - Created seeds for DB deploying
+      - Added pagination to entities

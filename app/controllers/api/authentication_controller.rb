@@ -31,7 +31,7 @@ class Api::AuthenticationController < ApplicationController
       )
     else
       render(
-        json: { errors: [I18n.t('errors.wrong_email_or_password')] },
+        json: { errors: [I18n.t("errors.wrong_email_or_password")] },
         status: :unauthorized
       )
     end

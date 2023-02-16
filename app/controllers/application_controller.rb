@@ -18,22 +18,22 @@ class ApplicationController < ActionController::API
     token = header.split.last if header
     decoded = jwt_decode(token)
     @current_user = User.find(decoded[:user_id])
-
   rescue JWT::DecodeError
-    return 'errors.token_not_found'
+    "errors.token_not_found"
   rescue ActiveRecord::RecordNotFound
-    return 'errors.token_invalid'
+    "errors.token_invalid"
   else
-    return nil
+    nil
   end
 
   def authenticate_request
     error = authenticate
+    return unless error
 
     render(
       json: { errors: [I18n.t(error)] },
       status: :unauthorized
-    ) if error
+    )
   end
 
   def add_csrf_to_headers
