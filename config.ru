@@ -4,5 +4,8 @@
 
 require_relative "config/environment"
 
+# Build frontend before start
+`cd client && yarn && yarn build`
+
 run Rails.application
 Rails.application.load_server
