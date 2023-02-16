@@ -4,11 +4,12 @@
 
 require_relative "config/environment"
 
-# Delete old prebuilt frontend before new build
+puts "\n--- Delete old build of frontend before new build ---"
 `cd public && rm -rf build`
 
-# Build frontend before start
+puts "\n--- Build frontend before server start ---"
 `cd client && yarn && yarn build`
+puts "\n"
 
 run Rails.application
 Rails.application.load_server

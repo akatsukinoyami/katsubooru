@@ -1,11 +1,11 @@
-import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import replaceHtmlVars from 'rollup-plugin-replace-html-vars';
-import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
-import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
+import livereload from 'rollup-plugin-livereload';
+import sveltePreprocess from 'svelte-preprocess';
+import replaceHtmlVars from 'rollup-plugin-replace-html-vars';
+import svelte from 'rollup-plugin-svelte';
+import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -47,22 +47,36 @@ export default {
 		// some cases you'll need additional configuration -
 		// consult the documentation for details:
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
+    commonjs(),
+
 		resolve({
       browser: true,
-			dedupe: ['svelte']
-		}),
+      dedupe: ['svelte']
+    }),
+
 		svelte({
-			preprocess: sveltePreprocess({ sourceMap: !production }),
-			compilerOptions: {
-				dev: !production // enable run-time checks when not in production
-			}
+			preprocess: sveltePreprocess({
+        sourceMap: !production
+      }),
+      compilerOptions: {
+        dev: !production,             // enable run-time checks when not in production
+        enableSourcemap: !production  // Set to  true if you want them
+      }
 		}),
+
 		typescript({
-      sourceMap: !production,
+      sourceMap: true, //!production,
 			inlineSources: !production
 		}),
 
-    replaceHtmlVars({                   // Replace fingerprints of prebuilt bundle in index.html
+    // we'll extract any component CSS out into a separate file - better for performance
+    css({
+      output: `bundle.${fingerprint}.css`,
+      sourceMap: true
+    }),
+
+    // Replace fingerprints of prebuilt bundle in index.html
+    replaceHtmlVars({
       files: '../public/index.html',
       from: [
         /bundle.[0-9]+.js/i,
@@ -74,14 +88,9 @@ export default {
       ],
     }),
 
-    css({
-      output: `bundle.${fingerprint}.css`// we'll extract any component CSS out into a separate file - better for performance
-    }),
-
-    commonjs(),
-		!production && serve(),              // In dev mode, call `npm run start` once the bundle has been generated
-		!production && livereload('public'), // Watch the `public` directory and refresh the browser on changes when not in production
-		production && terser()               // If we're building for production (npm run build instead of npm run dev), minify
+		!production && serve(),               // In dev mode, call `npm run start` once the bundle has been generated
+		!production && livereload('public'),  // Watch the `public` directory and refresh the browser on changes when not in production
+		production && terser()                // If we're building for production (npm run build instead of npm run dev), minify
 	],
 	watch: {
 		clearScreen: false
