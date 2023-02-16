@@ -16,11 +16,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
 
   create_table "artists", force: :cascade do |t|
     t.string "name", null: false
+    t.index ["name"], name: "index_artists_on_name", unique: true
   end
 
   create_table "characters", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "title_id"
+    t.index ["name", "title_id"], name: "index_characters_on_name_and_title_id", unique: true
     t.index ["title_id"], name: "index_characters_on_title_id"
   end
 
@@ -31,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
 
   create_table "entities", force: :cascade do |t|
     t.string "file", null: false
+    t.string "file_hash", null: false
     t.string "link"
     t.integer "media_type", default: 0, null: false
     t.integer "rating", default: 0, null: false
@@ -40,6 +43,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["artist_id"], name: "index_entities_on_artist_id"
+    t.index ["file_hash"], name: "index_entities_on_file_hash", unique: true
+    t.index ["link"], name: "index_entities_on_link", unique: true
     t.index ["user_id"], name: "index_entities_on_user_id"
   end
 
@@ -55,11 +60,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
 
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "titles", force: :cascade do |t|
     t.string "name", null: false
     t.integer "media_type", default: 0, null: false
+    t.index ["name"], name: "index_titles_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -69,6 +76,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
     t.string "avatar"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "index_users_on_name", unique: true
   end
 
 end
