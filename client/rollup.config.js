@@ -4,6 +4,7 @@ import typescript       from "@rollup/plugin-typescript";
 import copy             from "rollup-plugin-copy";
 import css              from "rollup-plugin-css-only";
 import del              from "rollup-plugin-delete";
+import json             from "@rollup/plugin-json";
 import livereload       from "rollup-plugin-livereload";
 import replaceHtmlVars  from "rollup-plugin-replace-html-vars";
 import svelte           from "rollup-plugin-svelte";
@@ -25,6 +26,7 @@ function materialize(fileFormat){
     dest: "../public/build",
     rename: fingerprint(`materialize.min.${fileFormat}`) }
 }
+
 function serve() {
 	let server;
 
@@ -61,6 +63,7 @@ export default {
 		// consult the documentation for details:
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
     commonjs(),
+    json(),
 		resolve({ browser: true, dedupe: ["svelte"] }),
 		typescript({ sourceMap: true, inlineSources: !production }),
 
