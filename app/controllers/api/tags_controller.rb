@@ -45,12 +45,14 @@ class Api::TagsController < Api::ApiController
 
   def model
     return object_params[:id].capitalize.constantize if model_param
+
     Tag
   end
 
   def model_param
     tag_model = object_params[:id]
-    return true if tag_model && ['artist', 'title', 'character', 'tag'].include?(tag_model)
+    return true if tag_model && %w[artist title character tag].include?(tag_model)
+
     false
   end
 
