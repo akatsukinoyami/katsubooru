@@ -8,6 +8,7 @@ ruby "3.1.3"
 gem "bcrypt", "~> 3.1.7"              # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bootsnap", require: false        # Reduces boot times through caching; required in config/boot.rb
 gem "carrierwave", "~> 2.2"           # File storing for rails app
+gem "image_hash", "~> 1.0"            # Simple Ruby library for calculating a perceptual hash of images
 gem "jbuilder"                        # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jwt", "~> 2.7"                   # Use Json Web Token (JWT) for token based authentication
 gem "pagy", "~> 6.0"                  # The Best Pagination Ruby Gem
@@ -22,12 +23,13 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby] # Windows does not
 
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw] # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "pry", "~> 0.14.2"
-  gem "rspec-rails", "~> 6.0"
+  gem "pry", "~> 0.14.2"              # Runtime developer console and IRB alternative with powerful introspection capabilities
+  gem "pry-rails", "~> 0.3.9"         # Small gem which causes 'rails console' to open pry
+  gem "rspec-rails", "~> 6.0"         # RSpec testing framework for Ruby on Rails
 end
 
 group :development do
   # gem "spring"                      # Szpeed up commands on slow machines / big apps [https://github.com/rails/spring]
   gem "rails-erd", "~> 1.7"           # Will generate a diagram based on your application's Active Record models
-  gem "rubocop", "~> 1.44"
+  gem "rubocop", "~> 1.44"            # Ruby static code analyzer (linter) and code formatter
 end
