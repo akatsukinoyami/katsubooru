@@ -4,27 +4,24 @@ class Api::UsersController < ApplicationController
   before_action :set_object, only: %i[show update destroy]
 
   def index
-    render json: User.all, status: :ok
+    render_200(User.all)
   end
 
   def show
-    render json: @user, status: :ok
+    render_200(@user)
   end
 
   def update
     if @user.update(object_params)
-      render json: @user, status: :ok
+      render_200(@user)
     else
-      render(
-        json: { errors: @user.errors.full_messages },
-        status: :unprocessable_entity
-      )
+      render_422({ errors: @user.errors.full_messages })
     end
   end
 
   def destroy
     @user.destroy
-    render json: "", status: :ok
+    render_200({})
   end
 
   private

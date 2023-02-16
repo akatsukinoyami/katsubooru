@@ -9,44 +9,35 @@ class Api::TagsController < ApplicationController
       tags: Tag.all
     }
 
-    render json: response, status: :ok
+    render_200(response)
   end
 
   def index
-    render json: model.all, status: :ok
+    render_200(model.all)
   end
 
   def create
     @tag = model.new(object_params)
 
     if @tag.save
-      render json: @tag, status: :created
+      render_201(@tag)
     else
-      render(
-        json: { errors: @tag.errors.full_messages },
-        status: :unprocessable_entity
-      )
+      render_422({ errors: @tag.errors.full_messages })
     end
   rescue ActiveRecord::RecordNotUnique
-    render(
-      json: {
-        data: model.where(name: @tag.name),
-        errors: [t('errors.tag_is_not_unique', tag: model.name)]
-      },
-      status: :unprocessable_entity
-    )
+    render_422({
+      data: model.where(name: @tag.name),
+      errors: [t('errors.tag_is_not_unique', tag: model.name)]
+    })
   end
 
   def update
     @tag = model.find(params[:id])
 
     if @tag.update(object_params)
-      render json: @tag, status: :ok
+      render_200(@tag)
     else
-      render(
-        json: { errors: @tag.errors.full_messages },
-        status: :unprocessable_entity
-      )
+      render_422({ errors: @tag.errors.full_messages })
     end
   end
 end

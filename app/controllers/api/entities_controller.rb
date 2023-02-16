@@ -11,11 +11,11 @@ class Api::EntitiesController < ApplicationController
     entities = @current_user ? Entity.all : Entity.safe
 
     @pagy, @entities = pagy(entities, items: object_params[:items])
-    render json: @entities, status: :ok
+    render_200(@entities)
   end
 
   def show
-    render json: @entity, status: :ok
+    render_200(@entity)
   end
 
   def create
@@ -23,38 +23,25 @@ class Api::EntitiesController < ApplicationController
     @entity.user = @current_user
 
     if @entity.save
-      render json: @entity, status: :ok
+      render_200(@entity)
     else
-      render(
-        json: { errors: @entity.errors.full_messages },
-        status: :unprocessable_entity
-      )
+      render_422({ errors: @entity.errors.full_messages })
     end
   rescue ActiveRecord::NotNullViolation => e
     error = e.to_s.split('ERROR:  ').last.split('DETAIL').first
-    render(
-      json: { errors: [error] },
-      status: :unprocessable_entity
-    )
-
+    render_422({ errors: [error] })
   rescue ActiveRecord::RecordNotUnique
-    render(
-      json: {
-        data: Entity.where(file_hash: @entity.file_hash),
-        errors: [t('errors.entity_is_not_unique')]
-      },
-      status: :unprocessable_entity
-    )
+    render_422({
+      data: Entity.where(file_hash: @entity.file_hash),
+      errors: [t('errors.entity_is_not_unique')]
+    })
   end
 
   def update
     if @entity.update(object_params)
-      render json: @entity, status: :ok
+      render_200(@entity)
     else
-      render(
-        json: { errors: @entity.errors.full_messages },
-        status: :unprocessable_entity
-      )
+      render_422({ errors: @entity.errors.full_messages })
     end
   end
 

@@ -28,9 +28,22 @@ class ApplicationController < ActionController::API
     error = authenticate
     return unless error
 
-    render(
-      json: { errors: [I18n.t(error)] },
-      status: :unauthorized
-    )
+    render_401({ errors: [I18n.t(error)] })
+  end
+
+  def render_200 body
+    render json: body, status: :ok
+  end
+
+  def render_201 body
+    render json: body, status: :created
+  end
+
+  def render_401 body
+    render json: body, status: :unauthorized
+  end
+
+  def render_422 body
+    render json: body, status: :unprocessable_entity
   end
 end

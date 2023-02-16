@@ -8,15 +8,9 @@ class Api::AuthenticationController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render(
-        json: { user: @user, token: "Bearer #{token}"},
-        status: :created
-      )
+      render_201({ user: @user, token: "Bearer #{token}"})
     else
-      render(
-        json: { errors: @user.errors.full_messages },
-        status: :unprocessable_entity
-      )
+      render_422({ errors: @user.errors.full_messages })
     end
   end
 
@@ -25,15 +19,9 @@ class Api::AuthenticationController < ApplicationController
     @user = User.find_by_email(params[:email])
 
     if @user&.authenticate(params[:password])
-      render(
-        json: { user: @user, token: "Bearer #{token}"},
-        status: :ok
-      )
+      render_200({ user: @user, token: "Bearer #{token}"})
     else
-      render(
-        json: { errors: [t("errors.wrong_email_or_password")] },
-        status: :unauthorized
-      )
+      render_401({ errors: [t("errors.wrong_email_or_password")] })
     end
   end
 
