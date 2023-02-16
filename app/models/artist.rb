@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class Author < Tag
+class Artist < ApplicationRecord
   has_many :entities
 end
