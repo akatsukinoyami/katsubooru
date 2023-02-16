@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+
+  errors:
+    wrong_email_or_password: "E-mail or password is incorrect"
+    token_invalid: "JWT token incorrect"
+    token_not_found: "JWT token not provided"
