@@ -8,7 +8,7 @@ attributes:
 filename: erd
 filetype: pdf
 
-disconnected: true
+disconnected: false
 indirect: true
 polymorphism: false
 inheritance: true
