@@ -9,6 +9,10 @@ class InitialDbStart < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
+    create_table :collections do |t|
+      t.timestamps
+    end
+
     create_table :entities do |t|
       t.string :file,         null: false
       t.string :file_hash,    null: false,  index: { unique: true }
@@ -20,6 +24,7 @@ class InitialDbStart < ActiveRecord::Migration[7.0]
 
       t.references :user
       t.references :artist
+      t.references :collection
 
       t.timestamps
     end

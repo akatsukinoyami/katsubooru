@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :entities
+    resources :collections
     resources :users, except: %i[create]
     namespace :tags do
       resources :artists,    only: %i[index create update]

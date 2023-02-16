@@ -31,6 +31,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
     t.bigint "character_id", null: false
   end
 
+  create_table "collections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "entities", force: :cascade do |t|
     t.string "file", null: false
     t.string "file_hash", null: false
@@ -40,9 +45,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
     t.integer "origin", default: 0, null: false
     t.bigint "user_id"
     t.bigint "artist_id"
+    t.bigint "collection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["artist_id"], name: "index_entities_on_artist_id"
+    t.index ["collection_id"], name: "index_entities_on_collection_id"
     t.index ["file_hash"], name: "index_entities_on_file_hash", unique: true
     t.index ["link"], name: "index_entities_on_link", unique: true
     t.index ["user_id"], name: "index_entities_on_user_id"
