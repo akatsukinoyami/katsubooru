@@ -18,7 +18,6 @@ class Entity < ApplicationRecord
 
   def as_json(options = {})
     options[:include] = %i[artist titles characters tags]
-
     hash = super(options)
     hash["file"]["thumb"] = hash.dig("file", "thumb", "url")
     hash

@@ -22,7 +22,7 @@ class Api::AuthenticationController < ApplicationController
     if @user&.authenticate(permitted_params[:password])
       render_200(@user)
     else
-      render_401({ errors: [t("errors.wrong_email_or_password")] })
+      render_401({ errors: [I18n.t("errors.wrong_email_or_password")] })
     end
   end
 
