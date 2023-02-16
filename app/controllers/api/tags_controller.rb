@@ -1,13 +1,12 @@
-class UsersController < ApplicationController
-
+class Api::TagsController < ApplicationController
   private
 
   def model
-    User
+    Tag
   end
 
   # Only allow a list of trusted parameters through.
   def object_params
-    params.fetch(:user, {})
+    params.require(:tag).permit(:type, :name)
   end
 end

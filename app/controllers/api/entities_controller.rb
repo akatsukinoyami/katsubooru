@@ -1,5 +1,4 @@
-class EntitiesController < ApplicationController
-
+class Api::EntitiesController < ApplicationController
   private
 
   def model
