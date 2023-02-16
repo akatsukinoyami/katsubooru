@@ -2,6 +2,7 @@
 
 class Entity < ApplicationRecord
   mount_uploader :file, FileUploader
+  before_validation :set_file_hash
 
   belongs_to :user
   belongs_to :artist, optional: true
@@ -14,7 +15,14 @@ class Entity < ApplicationRecord
   enum :rating,     %i[rating_unknown safe questionable nsfw]
   enum :origin,     %i[origin_unknown telegram discord pixiv artstation danbooru gelbooru rule34]
 
-  def as_json(options = nil)
-    super({ include: %i[artist titles characters tags] }.merge(options || {}))
+  def as_json(options = {})
+    options[:include] = %i[artist titles characters tags]
+    hash = super(options)
+    hash["file"]["thumb"] = hash.dig("file", "thumb", "url")
+    hash
+  end
+
+  def set_file_hash
+    self.file_hash = ImageHash.new(Dir.pwd + "/public" + self.file.url).hash
   end
 end
