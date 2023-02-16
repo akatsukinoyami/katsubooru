@@ -18,7 +18,7 @@ end
 
 create_seeds_for(Artist, %w[
   africas ahriman akashiro_yulice azto_dio bigrbear blondy camonome catstudio chaesu darumasan ddal
-  denkitori denkitori digele dpin edendenoden eto ez6 fadingz fkey gogalking green_tea_neko gusu
+  denkitori digele dpin edendenoden eto ez6 fadingz fkey gogalking green_tea_neko gusu
   ha_ku_ronofu_jin hitomio16 hjl honghonghong hs225kr iskanderednaksi kittichai_rueangchaichan_razaras
   koronda kuroyagi kurusu_tatsuya lemontyoisy_r18 liren44 luiferblack maachin machino_henmaru mdf_an
   messsss mignon minjkim momonoko_noko monikano moshimoshibe murakami_suigun nekodayo22 norizou_type_r
@@ -27,7 +27,7 @@ create_seeds_for(Artist, %w[
 ])
 
 create_seeds_for(Title, %w[
-  arknights legend_of_zelda nier_automata nier_replicant scooby_doo
+  arknights legend_of_zelda nier_automata nier_replicant
   azur_lane dead_or_alive genshin_impact girls_frontline league_of_legends overwatch
   touhou blue_archive elden_ring goddes_of_viktory_nikke mario_bros
   persona vocaloid buhanochka endless_summer helltaker metroid pokemon_sword_and_shield
@@ -80,7 +80,7 @@ create_seeds_for(Tag, %w[
   nude nude_completely nude_partly
   object_insertion object_insertion_anal object_insertion_both object_insertion_vaginal
   pants penetration_cervical penetration_urethral public pussy
-  santa school_uniform sex sex sex_anal sex_machine sex_public sex_toy
+  santa school_uniform sex sex_anal sex_machine sex_public sex_toy
   sex_vaginal shibari sportswear spread_legs stomach_bulge swimsuit swimsuit_school
   tentacles towel
   vibrator
