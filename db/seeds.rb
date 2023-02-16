@@ -7,10 +7,13 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 def create_seeds_for model, string_array, media_type=false
-  fields = {name: name}
-  fields[:media_type] = media_type if media_type
-
-  string_array.each { |name| model.create(fields) }
+  string_array.each do |name|
+    if media_type
+      model.create(name:, media_type:)
+    else
+      model.create(name:)
+    end
+  end
 end
 
 create_seeds_for(Artist, %w[
