@@ -4,6 +4,9 @@
 
 require_relative "config/environment"
 
+# Delete old prebuilt frontend before new build
+`cd public && rm -rf build`
+
 # Build frontend before start
 `cd client && yarn && yarn build`
 
