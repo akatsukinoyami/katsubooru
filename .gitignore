@@ -27,3 +27,6 @@
 
 # Ignore stored entities
 /public/uploads/*
+
+# Ignore seeds
+/db/seeds
