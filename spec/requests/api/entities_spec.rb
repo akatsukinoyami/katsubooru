@@ -1,18 +1,20 @@
 require 'swagger_helper'
 
+endpoint_tag = 'Entity API'
+
 RSpec.describe 'api/entities', type: :request do
 
   path '/api/entities' do
 
     get('list entities') do
-      tags 'Entity API'
+      tags endpoint_tag
       response(200, 'successful') do
         run_test!
       end
     end
 
     post('create entity') do
-      tags 'Entity API'
+      tags endpoint_tag
       response(200, 'successful') do
         run_test!
       end
@@ -24,7 +26,7 @@ RSpec.describe 'api/entities', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show entity') do
-      tags 'Entity API'
+      tags endpoint_tag
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!
@@ -32,7 +34,7 @@ RSpec.describe 'api/entities', type: :request do
     end
 
     patch('update entity') do
-      tags 'Entity API'
+      tags endpoint_tag
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!
@@ -40,7 +42,7 @@ RSpec.describe 'api/entities', type: :request do
     end
 
     put('update entity') do
-      tags 'Entity API'
+      tags endpoint_tag
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!
@@ -48,7 +50,7 @@ RSpec.describe 'api/entities', type: :request do
     end
 
     delete('delete entity') do
-      tags 'Entity API'
+      tags endpoint_tag
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!

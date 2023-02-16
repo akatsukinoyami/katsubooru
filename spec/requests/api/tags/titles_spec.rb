@@ -1,18 +1,20 @@
 require 'swagger_helper'
 
+endpoint_tag = 'Tags API'
+
 RSpec.describe 'api/tags/titles', type: :request do
 
   path '/api/tags/titles' do
 
     get('list titles') do
-      tags 'Tags API'
+      tags(endpoint_tag)
       response(200, 'successful') do
         run_test!
       end
     end
 
     post('create title') do
-      tags 'Tags API'
+      tags(endpoint_tag)
       response(200, 'successful') do
         run_test!
       end
@@ -24,7 +26,7 @@ RSpec.describe 'api/tags/titles', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     patch('update title') do
-      tags 'Tags API'
+      tags(endpoint_tag)
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!
@@ -32,7 +34,7 @@ RSpec.describe 'api/tags/titles', type: :request do
     end
 
     put('update title') do
-      tags 'Tags API'
+      tags(endpoint_tag)
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!

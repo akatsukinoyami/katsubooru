@@ -1,11 +1,13 @@
 require 'swagger_helper'
 
+endpoint_tag = 'Users API'
+
 RSpec.describe 'api/users', type: :request do
 
   path '/api/users' do
 
     get('list users') do
-      tags 'Users API'
+      tags endpoint_tag
       response(200, 'successful') do
         run_test!
       end
@@ -17,7 +19,7 @@ RSpec.describe 'api/users', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show user') do
-      tags 'Users API'
+      tags endpoint_tag
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!
@@ -25,7 +27,7 @@ RSpec.describe 'api/users', type: :request do
     end
 
     patch('update user') do
-      tags 'Users API'
+      tags endpoint_tag
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!
@@ -33,7 +35,7 @@ RSpec.describe 'api/users', type: :request do
     end
 
     put('update user') do
-      tags 'Users API'
+      tags endpoint_tag
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!
@@ -41,7 +43,7 @@ RSpec.describe 'api/users', type: :request do
     end
 
     delete('delete user') do
-      tags 'Users API'
+      tags endpoint_tag
       response(200, 'successful') do
         let(:id) { '123' }
         run_test!
