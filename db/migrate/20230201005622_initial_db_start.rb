@@ -1,34 +1,48 @@
 class InitialDbStart < ActiveRecord::Migration[7.0]
   def change
     create_table :users do |t|
-      t.string :name, null: false
-      t.string :avatar
-      t.string :email
+      t.string :name,  unique: true, null: false
+      t.string :email, unique: true, null: false
       t.string :password_digest
+      t.string :avatar
 
       t.timestamps
     end
 
     create_table :entities do |t|
       t.string :file, null: false
-      t.string :link
-      t.integer :rating, null: false, default: 0
+      t.string :link, unique: true
+
+      t.integer :media_type, null: false, default: 0 # enum: %i[art photo anime_video real_video]
+      t.integer :rating,     null: false, default: 0 # enum: %i[unknown safe questionable nsfw]
+      t.integer :origin,     null: false, default: 0 # enum: %i[unknown telegram discord pixiv artstation danbooru gelbooru rule34]
 
       t.references :user
-      t.references :origin
-      t.references :author
+      t.references :artist
+
       t.timestamps
     end
 
-    create_table :tags do |t|
-      t.string :type # origin, author, title, charachter, general
-      t.string :name
+    create_table :artists do |t|
+      t.string :name, unique: true, null: false
+    end
 
-      t.timestamps
+    create_table :titles do |t|
+      t.string :name, unique: true, null: false
+      t.integer :media_type, null: false, default: 0 # enum: %i[unknown game series movie cartoon anime hentai comic manga]
+    end
+
+    create_table :characters do |t|
+      t.string :name, unique: true, null: false
+      t.references :title
+    end
+
+    create_table :tags do |t|
+      t.string :name, unique: true, null: false
     end
 
     create_join_table :entities, :titles
     create_join_table :entities, :characters
-    create_join_table :entities, :generals
+    create_join_table :entities, :tags
   end
 end
