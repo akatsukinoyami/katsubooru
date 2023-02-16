@@ -21,5 +21,6 @@ group :development, :test do
 end
 
 group :development do
+  gem "rubocop", "~> 1.44"
   # gem "spring" # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
 end
