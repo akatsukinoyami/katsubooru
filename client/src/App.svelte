@@ -1,30 +1,28 @@
 <script lang="ts">
-	export let name: string;
+	import { Router } from "svelte-navigator";
+  import TopAppBar, { AutoAdjust } from '@smui/top-app-bar';
+  import Navbar from "./components/Navbar.svelte";
+
+  let topAppBar: TopAppBar;
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+<Router primary={false}>
+  <TopAppBar bind:this={topAppBar} variant="short">
+    <Navbar/>
+  </TopAppBar>
+  <AutoAdjust {topAppBar}>
+  </AutoAdjust>
+</Router>
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+<style lang="sass">
+  /* Hide everything above this component. */
+  :global(#smui-app),
+  :global(body),
+  :global(html)
+    display: block !important
+    height: auto !important
+    width: auto !important
+    position: static !important
 </style>
