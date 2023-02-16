@@ -7,7 +7,12 @@ class Title < ApplicationRecord
   enum :media_type, %i[unknown game series movie cartoon anime hentai comic manga]
 
   def as_json(options = {})
-    options[:include] << %i[characters]
+    if options.key?(:include) && options[:include].class == Array
+      options[:include] << %i[characters]
+    else
+      options[:include] = %i[characters]
+    end
+
     super(options)
   end
 end

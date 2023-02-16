@@ -12,7 +12,12 @@ class User < ApplicationRecord
   has_many :entities
 
   def as_json(options = {})
-    options[:except] << %i[password_digest]
+    if options.key?(:except) && options[:except].class == Array
+      options[:except] << %i[password_digest]
+    else
+      options[:except] = %i[password_digest]
+    end
+
     super(options)
   end
 end
