@@ -7,7 +7,7 @@
 
 <a
   class="card" use:links
-  href="{location.origin}/entity/{entity.id}"
+  href="{location.origin}/entities/{entity.id}"
   style="background-image: url({entity.file.thumb});"
 >&nbsp;</a>
 
