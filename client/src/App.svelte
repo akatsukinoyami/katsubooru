@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Router } from 'svelte-navigator';
-  import Routes from './partials/Routes.svelte';
+  import Routes from './Routes.svelte';
   import Main from './components/Main.svelte';
 
   import Alerts from "./partials/_Alerts.svelte";
