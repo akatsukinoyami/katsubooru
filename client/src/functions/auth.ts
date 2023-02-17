@@ -1,4 +1,4 @@
-import { currentUser } from "../stores";
+import { currentUser } from "../stores/currentUser";
 import { POST } from "../functions/request";
 import { getValueById } from "../functions/helper";
 import alertsHandler from "../functions/alerts";

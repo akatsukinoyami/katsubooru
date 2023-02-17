@@ -1,6 +1,6 @@
 import type HeadersInterface from "../interfaces/headers";
 import type RequestParameters from "../interfaces/request.parameters";
-import { currentUser } from "../stores";
+import { currentUser } from "../stores/currentUser";
 import alertsHandler from "./alerts";
 
 function headers(): HeadersInterface {
