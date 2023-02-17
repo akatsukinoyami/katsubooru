@@ -1,4 +1,4 @@
-import type TagInterface from "./tag";
+import type { TagInterface } from ".";
 
 export default interface EntityInterface {
   id: number,

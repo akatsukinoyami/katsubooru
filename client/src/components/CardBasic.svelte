@@ -1,12 +1,16 @@
 <script lang="ts">
   import Col from "./Col.svelte";
   import Row from "./Row.svelte";
-  import type Link from "../interfaces/link";
+
+  interface LinkInterface {
+    href: string,
+    content: string,
+  }
 
   export let
     title: string,
     content: string,
-    links: Link[];
+    links: LinkInterface[];
 
 </script>
 

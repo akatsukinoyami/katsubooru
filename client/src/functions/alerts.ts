@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import type AlertInterface from "../interfaces/notice";
+import type { AlertInterface } from "../interfaces";
 import { alerts } from "../stores";
 
 const alertsHandler = {

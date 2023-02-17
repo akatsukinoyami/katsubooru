@@ -1,7 +1,11 @@
-import type HeadersInterface from "../interfaces/headers";
-import type RequestParameters from "../interfaces/request.parameters";
-import { currentUser } from "../stores/currentUser";
 import alertsHandler from "./alerts";
+import { currentUser } from "../stores/currentUser";
+import type { RequestParameters } from "../interfaces";
+
+interface HeadersInterface extends Record<string, string>{
+  'Authorization'?: string,
+  'Content-Type'?: string,
+}
 
 function headers(): HeadersInterface {
   const headers = { 'Content-Type': 'application/json' };
