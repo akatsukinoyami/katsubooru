@@ -1,22 +1,23 @@
 <script lang="ts">
   import Col from "../../../components/Col.svelte";
-  import { entities } from "../../../stores/entities";
-  import type TagsInterface from "../../../interfaces/tags";
+  import type { TagsInterface } from "../../../interfaces";
+  import type EntityInterface from "../../../interfaces/entity";
 
+  export let entities: EntityInterface[];
   const allTags: TagsInterface = { artist: [], tags: [], titles: [], characters: [] };
   const tagTypes = ['artist', 'tags', 'titles', 'characters'];
 
   $: tagTypes.map((tagType)=>{
-      const pluckedTags = $entities.map((entity) => { return entity[tagType] });
-      const flatenTags = pluckedTags.flat();
+    const pluckedTags = entities.map((entity) => { return entity[tagType] });
+    const flatenTags = pluckedTags.flat();
 
-      if (flatenTags.length > 0 ) {
-        const uniqTags = [...new Map(
-          flatenTags.map(item => [item.id, item])
-        ).values()];
-        allTags[tagType] = uniqTags;
-      };
-    });
+    if (flatenTags.length > 0 ) {
+      const uniqTags = [...new Map(
+        flatenTags.map(item => [item.id, item])
+      ).values()];
+      allTags[tagType] = uniqTags;
+    };
+  });
 
 </script>
 

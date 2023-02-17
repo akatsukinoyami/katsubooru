@@ -2,16 +2,16 @@
   import Col from "../../../components/Col.svelte";
   import Row from "../../../components/Row.svelte";
   import CardEntity from "../../../components/CardEntity.svelte";
-  import { entities } from "../../../stores/entities";
-  import type ColInterface from "../../../interfaces/col";
+  import type { ColInterface } from "../../../interfaces";
+  import type EntityInterface from "../../../interfaces/entity";
 
+  export let entities: EntityInterface[];
   const imageSize: ColInterface = { s:6, m:4, xl:3 };
-
 </script>
 
 <Col s={12} l={9} className="push-l3">
   <Row>
-    {#each $entities as entity (entity.id)}
+    {#each entities as entity (entity.id)}
       <Col {...imageSize}>
         <CardEntity entity={entity}/>
       </Col>

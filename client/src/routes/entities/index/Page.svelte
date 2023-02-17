@@ -6,11 +6,13 @@
   import Aside from './_Aside.svelte';
 </script>
 
-{#if $entities}
-  <Row>
-    <Main/>
-    <Aside/>
-  </Row>
-{:else}
+{#await entities.value()}
   <Preloader/>
-{/if}
+{:then _entities}
+  {#if _entities.length > 0}
+    <Row>
+      <Main  entities={_entities}/>
+      <Aside entities={_entities}/>
+    </Row>
+  {/if}
+{/await}
