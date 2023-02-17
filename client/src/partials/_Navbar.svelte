@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { links } from "svelte-navigator";
   import { signOut } from "../functions/auth";
-  import { currentUser, title } from "../stores";
+  import { title, print } from "../stores/index";
+  import { currentUser } from "../stores/currentUser";
 
   $: pesentCurrentUser = $currentUser && Object.keys($currentUser).length > 0
 </script>
@@ -17,6 +18,7 @@
         <li><a href="{location.origin}/sign_in">Sign in</a></li>
         <li><a href="{location.origin}/sign_up">Sign up</a></li>
       {/if}
+      <li><a href={"#"} on:click={() => console.log($print)}>Debug</a></li>
     </ul>
   </div>
 </nav>
