@@ -1,25 +1,22 @@
 <script lang="ts">
   import { useParams } from "svelte-navigator";
 
-  import Col from "../../../components/Col.svelte";
   import Row from "../../../components/Row.svelte";
+  import Col from "../../../components/Col.svelte";
   import Preloader from "../../../components/Preloader.svelte";
-  import { GET } from "../../../functions/request";
-  import Main from "./_Main.svelte";
   import Aside from "./_Aside.svelte";
-  // import {print} from "../../stores/index"
-  // print.set({})
+  import { entities } from "../../../stores/entities";
 
 	const params = useParams();
-
-  const entityPromise = GET({ path: '/api/entities/'+$params.id })
 </script>
 
-{#await entityPromise}
+{#await entities.findById($params.id)}
   <Preloader/>
 {:then entity}
 <Row>
-  <Main  entity={entity} />
+  <Col s={12} l={9} className="push-l3">
+    <img src={entity.file.url} alt="">
+  </Col>
   <Aside entity={entity} />
 </Row>
 {/await}
