@@ -1,46 +1,71 @@
-import { get, derived, Readable } from 'svelte/store';
+import { Writable, writable, get } from 'svelte/store';
 import { GET } from '../functions/request';
 import type EntityInterface from '../interfaces/entity';
-import { currentUser } from './currentUser';
 
-interface EntitiesDerivedStore extends Readable<EntityInterface[]> {
-  find: (key: string, value: string | number) => EntityInterface,
-  value: () => EntityInterface[],
-  where: (key: string, value: string | number) => EntityInterface[],
+interface EntitiesWritableStore extends Writable<[]> {
+  all: () => Promise<EntityInterface[]>,
+  findBy: (key: string, value: string | number) => Promise<EntityInterface>,
+  findById: (value: string | number) => Promise<EntityInterface>,
+  first: () => EntityInterface,
+  last: () => EntityInterface,
+  load: (callbackFn: (json: unknown[]) => void) => void;
+  loadClear: () => void,
+  loadById: (id: number | string) => Promise<EntityInterface>,
+  setUniq: (entities: EntityInterface[]) => void,
+  where: (key: string, value: string | number) => Promise<EntityInterface[]>,
 }
 
-export const entities: EntitiesDerivedStore = {
-  ...derived(
-    currentUser,
-    ($currentUser, set) => {
-      GET({
-        path: '/api/entities',
-        callbackFn: (json) => { set([...get(entities), ...json]) }
-      });
-      //return () => { set = () => {} }; // see big comment
-    }, [],
-  ),
+export const entities: EntitiesWritableStore = {
+  ...writable([]),
 
-  find: function(key: string, value: string | number): EntityInterface {
-    return this.value()
-      .find((entity: EntityInterface) => {
-      entity[key] == value
-    });
-  },
-
-  value: function(): EntityInterface[] {
+  all: async function(): Promise<EntityInterface[]> {
+    const entities = get<EntityInterface[]>(this);
+    if (entities.length > 0) return entities;
+    await this.load();
     return get<EntityInterface[]>(this);
   },
 
-  where: function(key: string, value: string | number): EntityInterface[] {
-    return this.value()
-      .filter((entity: EntityInterface) => {
-      entity[key] == value
-    });
+  findBy: async function(key: 'id' | string, value: string | number): Promise<EntityInterface> {
+    const values = get<EntityInterface[]>(this);
+    const found = values.find((entity: EntityInterface) => { entity[key] == value });
+    if (found) return found;
+    if (key === 'id') return await this.loadById(value);
+  },
+
+  findById: async function(value: string | number): Promise<EntityInterface> {
+    return await this.findBy('id', value);
+  },
+
+  first: function(): EntityInterface{
+    return get<EntityInterface[]>(this)[0];
+  },
+
+  last: function(): EntityInterface{
+    return get<EntityInterface[]>(this)[0];
+  },
+
+  load: async function(){
+    const response = await GET({ path: '/api/entities' });
+    this.setUniq([...get(entities), ...response]);
+  },
+
+  loadClear: async function(){
+    const response = await GET({ path: '/api/entities' });
+    this.setUniq([...response]);
+  },
+
+  loadById: async function(id: string | number){
+    const response = await GET({ path: `/api/entities/${id}` });
+    this.setUniq([...get(entities), response]);
+    return response;
+  },
+
+  setUniq: function (entities: EntityInterface[]): void {
+    this.set([...new Map(entities.map(item => [item.id, item])).values()]);
+  },
+
+  where: async function(key: string, value: string | number): Promise<EntityInterface[]> {
+    const values = await this.value();
+    return values.filter((entity: EntityInterface) => { entity[key] == value });
   },
 }
-
-// We override the `set` function to eliminate race conditions
-// This does *not* abort running fetch() requests, it only prevents
-// them from overriding the store.
-// To learn about canceling fetch requests, search the internet for `AbortController`
