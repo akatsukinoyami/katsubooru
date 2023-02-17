@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { links } from "svelte-navigator";
   import { signOut } from "../functions/auth";
-  import { title, print } from "../stores/index";
+  import { title, debug } from "../stores/index";
   import { currentUser } from "../stores/currentUser";
 
   $: pesentCurrentUser = $currentUser && Object.keys($currentUser).length > 0
@@ -13,12 +13,12 @@
     <ul id="nav-mobile" class="right hide-on-med-and-down" use:links>
       {#if pesentCurrentUser}
         <li>Hello, {$currentUser.name}</li>
-        <li><a href="{location.origin}/sign_out" on:click={() => signOut()}>Sign out</a></li>
+        <li><a href="{location.origin}/auth/sign_out" on:click={() => signOut()}>Sign out</a></li>
       {:else}
-        <li><a href="{location.origin}/sign_in">Sign in</a></li>
-        <li><a href="{location.origin}/sign_up">Sign up</a></li>
+        <li><a href="{location.origin}/auth/sign_in">Sign in</a></li>
+        <li><a href="{location.origin}/auth/sign_up">Sign up</a></li>
       {/if}
-      <li><a href={"#"} on:click={() => console.log($print)}>Debug</a></li>
+      <li><a href={"#"} on:click={() => console.log($debug)}>Debug</a></li>
     </ul>
   </div>
 </nav>
