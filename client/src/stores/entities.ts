@@ -2,8 +2,13 @@ import { Writable, writable, get } from 'svelte/store';
 import { GET } from '../functions/request';
 import type EntityInterface from '../interfaces/entity';
 
-interface EntitiesWritableStore extends Writable<[]> {
-  all: () => Promise<EntityInterface[]>,
+type EntitiesObjectType = Record<number, EntityInterface>;
+
+export interface EntitiesWritableStore extends Writable<EntitiesObjectType> {
+  all: () => Promise<EntitiesObjectType>,
+  array: () => EntityInterface[],
+  count: () => number,
+  empty: () => boolean,
   findBy: (key: string, value: string | number) => Promise<EntityInterface>,
   findById: (value: string | number) => Promise<EntityInterface>,
   first: () => EntityInterface,
@@ -11,61 +16,64 @@ interface EntitiesWritableStore extends Writable<[]> {
   load: (callbackFn: (json: unknown[]) => void) => void;
   loadClear: () => void,
   loadById: (id: number | string) => Promise<EntityInterface>,
-  setUniq: (entities: EntityInterface[]) => void,
-  where: (key: string, value: string | number) => Promise<EntityInterface[]>,
+  where: (key: string, value: string | number) => Promise<EntitiesObjectType>,
 }
 
 export const entities: EntitiesWritableStore = {
-  ...writable([]),
+  ...writable({}),
 
-  all: async function(): Promise<EntityInterface[]> {
-    const entities = get<EntityInterface[]>(this);
-    if (entities.length > 0) return entities;
+  all: async function(): Promise<EntitiesObjectType> {
+    if (!this.empty) return get<EntitiesObjectType>(this);
+
     await this.load();
-    return get<EntityInterface[]>(this);
+    return get<EntitiesObjectType>(this);
   },
 
-  findBy: async function(key: 'id' | string, value: string | number): Promise<EntityInterface> {
-    const values = get<EntityInterface[]>(this);
-    const found = values.find((entity: EntityInterface) => { entity[key] == value });
-    if (found) return found;
-    if (key === 'id') return await this.loadById(value);
+  array: function (): EntityInterface[] {
+    return Object.values(get<EntitiesObjectType>(this));
+  },
+
+  count: function (): number {
+    return Object.keys(get<EntitiesObjectType>(this)).length;
+  },
+
+  empty: function (): boolean {
+    return this.count > 0;
+  },
+
+  findBy: async function(key: string, value: string | number): Promise<EntityInterface> {
+    return this.array().find((entity: EntityInterface) => { entity[key] == value });
   },
 
   findById: async function(value: string | number): Promise<EntityInterface> {
-    return await this.findBy('id', value);
+    return get<EntitiesObjectType>(this)[value];
   },
 
   first: function(): EntityInterface{
-    return get<EntityInterface[]>(this)[0];
+    return this.array()[0];
   },
 
   last: function(): EntityInterface{
-    return get<EntityInterface[]>(this)[0];
+    return this.array()[this.count - 1];
   },
 
   load: async function(){
-    const response = await GET({ path: '/api/entities' });
-    this.setUniq([...get(entities), ...response]);
-  },
-
-  loadClear: async function(){
-    const response = await GET({ path: '/api/entities' });
-    this.setUniq([...response]);
+    const response = await GET({ path: '/api/entities' }) as EntitiesObjectType;
+    this.set({...get(entities), ...response});
   },
 
   loadById: async function(id: string | number){
-    const response = await GET({ path: `/api/entities/${id}` });
-    this.setUniq([...get(entities), response]);
+    const response = await GET({ path: `/api/entities/${id}` }) as EntityInterface;
+    this.set({...get(entities), response});
     return response;
   },
 
-  setUniq: function (entities: EntityInterface[]): void {
-    this.set([...new Map(entities.map(item => [item.id, item])).values()]);
+  loadClear: async function(){
+    const response = await GET({ path: '/api/entities' }) as EntitiesObjectType;
+    this.set({...response});
   },
 
-  where: async function(key: string, value: string | number): Promise<EntityInterface[]> {
-    const values = await this.value();
-    return values.filter((entity: EntityInterface) => { entity[key] == value });
+  where: async function(key: string, value: string | number): Promise<EntitiesObjectType> {
+    return this.array().filter((entity: EntityInterface) => { entity[key] == value });
   },
 }

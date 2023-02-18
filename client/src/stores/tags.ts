@@ -1,13 +1,35 @@
-import { readable } from 'svelte/store';
+import { Writable, writable, get } from 'svelte/store';
 import { GET } from '../functions/request';
+import type { TagType } from '../types';
 
-export const tags = readable({ artists: [], titles: [], characters: [], tags: [] },
-  (set) => {
-    GET({ path: '/api/tags', callbackFn: (json) => { set(json) } });
-    return () => { set = () => {} }; // see big comment
-  })
+interface TagsInterface {
+  artists:    TagType[],
+  titles:     TagType[],
+  characters: TagType[],
+  tags:       TagType[]
+}
+interface TagsStoreInterface extends Writable<TagsInterface> {
+  all: () => Promise<TagsInterface>,
+  empty: () => boolean,
+  load: () => Promise<void>,
+}
 
-// We override the `set` function to eliminate race conditions
-// This does *not* abort running fetch() requests, it only prevents
-// them from overriding the store.
-// To learn about canceling fetch requests, search the internet for `AbortController`
+export const tags: TagsStoreInterface = {
+  ...writable({}) as Writable<TagsInterface>,
+
+  all: async function(): Promise<TagsInterface>{
+    if (!this.empty) return get<TagsInterface>(this);
+
+    await this.load();
+    return get<TagsInterface>(this);
+  },
+
+  empty: function (): boolean {
+    return Object.keys(get<TagsInterface>(this)).length > 0;
+  },
+
+  load: async function(): Promise<void>{
+    const response = await GET({ path: '/api/tags' });
+    this.set(response);
+  },
+}
