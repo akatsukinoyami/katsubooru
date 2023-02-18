@@ -6,9 +6,6 @@
 
   import EntitiesIndex from './routes/entities/index/Page.svelte';
   import EntitiesShow from './routes/entities/show/Page.svelte';
-  import { currentUser } from "./stores/currentUser";
-
-  const navigate = useNavigate();
 </script>
 
 <Route path="auth/*">
@@ -17,10 +14,6 @@
 </Route>
 <Route path="entities/*">
   <Route path="/" component="{EntitiesIndex}" />
-  {#if currentUser.exists()}
-    <Route path=":id" component="{EntitiesShow}" />
-  {:else}
-    {navigate('/')}
-  {/if}
+  <Route path=":id" component="{EntitiesShow}" />
 </Route>
 <Route component="{EntitiesIndex}" />
