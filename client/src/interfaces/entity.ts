@@ -1,8 +1,6 @@
-import type { TagInterface } from ".";
-
 export default interface EntityInterface {
   id: number,
-  file: File,
+  file: FileInterface,
   file_hash: string,
   link: string,
   media_type: string,
@@ -11,15 +9,14 @@ export default interface EntityInterface {
   user_id: number,
   artist_id: number,
   collection_id: number,
-  artist: TagInterface,
-  titles: TagInterface[],
-  characters: TagInterface[],
-  tags: TagInterface[],
+  titles: number[],
+  characters: number[],
+  tags: number[],
   created_at: string,
   updated_at: string,
 }
 
-export interface File {
+export interface FileInterface {
   url: string,
   thumb: string,
 }

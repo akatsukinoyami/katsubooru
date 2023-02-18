@@ -20,7 +20,7 @@ function headers(): HeadersInterface {
 
 export async function GET({
   path, callbackFn = () => {},
-}: RequestParameters): Promise<any> {
+}: RequestParameters): Promise<unknown> {
   try {
     const response = await fetch(location.origin + path, {
       method: 'GET',
@@ -42,7 +42,7 @@ export async function GET({
 
 export async function POST({
   path, body, callbackFn = () => {}
-}: RequestParameters): Promise<any> {
+}: RequestParameters): Promise<unknown> {
   try {
     const response = await fetch(location.origin + path, {
       method: 'POST',

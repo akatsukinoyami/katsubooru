@@ -1,4 +1,5 @@
 import type { columnSizeType } from "../types";
+export type { default as EntityInterface, FileInterface } from "./entity";
 
 export interface AlertInterface {
   error: boolean,
@@ -18,16 +19,4 @@ export interface ColInterface {
   m?: columnSizeType;
   l?: columnSizeType;
   xl?:columnSizeType;
-}
-
-export interface TagInterface{
-  id: number,
-  name: string,
-}
-
-export interface TagsInterface {
-  artist?: TagInterface[],
-  tags?: TagInterface[],
-  titles?: TagInterface[],
-  characters?: TagInterface[],
 }
