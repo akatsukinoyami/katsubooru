@@ -6,6 +6,7 @@
 
   import EntitiesIndex from './routes/entities/index/Page.svelte';
   import EntitiesShow from './routes/entities/show/Page.svelte';
+  import EntitiesForm from './routes/entities/form/Page.svelte';
 </script>
 
 <Route path="auth/*">
@@ -15,5 +16,6 @@
 <Route path="entities/*">
   <Route path="/" component="{EntitiesIndex}" />
   <Route path=":id" component="{EntitiesShow}" />
+  <Route path="/create" component="{EntitiesForm}" />
 </Route>
 <Route component="{EntitiesIndex}" />
