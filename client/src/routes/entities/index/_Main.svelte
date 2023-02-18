@@ -2,8 +2,7 @@
   import Col from "../../../components/Col.svelte";
   import Row from "../../../components/Row.svelte";
   import CardEntity from "../../../components/CardEntity.svelte";
-  import type { ColInterface } from "../../../interfaces";
-  import type EntityInterface from "../../../interfaces/entity";
+  import type { ColInterface, EntityInterface } from "../../../interfaces";
 
   export let entities: EntityInterface[];
   const imageSize: ColInterface = { s:6, m:4, xl:3 };

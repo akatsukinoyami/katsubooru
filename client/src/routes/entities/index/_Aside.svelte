@@ -1,37 +1,52 @@
 <script lang="ts">
   import Col from "../../../components/Col.svelte";
-  import type { TagsInterface } from "../../../interfaces";
-  import type EntityInterface from "../../../interfaces/entity";
+  import Preloader from "../../../components/Preloader.svelte";
+  import { tags } from "../../../stores";
+  import type { EntityInterface } from "../../../interfaces";
 
   export let entities: EntityInterface[];
-  const allTags: TagsInterface = { artist: [], tags: [], titles: [], characters: [] };
-  const tagTypes = ['artist', 'tags', 'titles', 'characters'];
 
-  $: tagTypes.map((tagType)=>{
-    const pluckedTags = entities.map((entity) => { return entity[tagType] });
-    const flatenTags = pluckedTags.flat();
+  interface TagIdsInterface {
+    artists?:     number[],
+    tags?:        number[],
+    titles?:      number[],
+    characters?:  number[],
+  }
 
-    if (flatenTags.length > 0 ) {
-      const uniqTags = [...new Map(
-        flatenTags.map(item => [item.id, item])
-      ).values()];
-      allTags[tagType] = uniqTags;
-    };
-  });
+  const tagIds: TagIdsInterface = {
+    artists:     [],
+    tags:       [],
+    titles:     [],
+    characters: [],
+  }
 
+  $: {
+    ["tags", "titles", "characters"].forEach((tag) => {
+      entities.forEach((entity: EntityInterface) => {
+        tagIds[tag].push(...entity[tag]);
+      })
+      tagIds[tag] = [...new Set(tagIds[tag])]
+    })
+    entities.forEach((entity: EntityInterface) => {
+      tagIds.artists.push(entity.artist_id);
+    })
+    tagIds.artists = [...new Set(tagIds.artists)]
+  }
 </script>
 
 <Col s={12} l={3} className="pull-l9">
-  {#each tagTypes as tagType (tagType)}
-    {#if allTags[tagType].length > 0}
+  {#await tags.all()}
+    <Preloader/>
+  {:then _tags}
+    {#each Object.keys(tagIds) as tagType (tagType)}
       <p class="tag_header">{tagType}</p>
       <ul>
-        {#each allTags[tagType] as tag (tag)}
-          <li><a href={"/"}>{tag.name}</a></li>
+        {#each tagIds[tagType] as tag (tag)}
+          <li><a href={"/"}>{_tags[tagType][tag]}</a></li>
         {/each}
       </ul>
-    {/if}
-  {/each}
+    {/each}
+  {/await}
 </Col>
 
 <style lang="sass">
