@@ -17,9 +17,13 @@ class Entity < ApplicationRecord
   enum :origin,     %i[origin_unknown telegram discord pixiv artstation danbooru gelbooru rule34]
 
   def as_json(options = {})
-    options[:include] = %i[artist titles characters tags]
+    options[:include] = %i[titles characters tags]
     hash = super(options)
     hash["file"]["thumb"] = hash.dig("file", "thumb", "url")
+
+    ["titles", "characters", "tags"].each do |tag_name|
+      hash[tag_name] = hash[tag_name].map { |tag| tag["id"] }
+    end
     hash
   end
 

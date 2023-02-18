@@ -3,10 +3,10 @@
 class Api::TagsController < ApplicationController
   def all
     response = {
-      artists: Artist.all,
-      titles: Title.all,
-      characters: Character.all,
-      tags: Tag.all
+      artists:      serialize(Artist),
+      titles:       serialize(Title),
+      characters:   serialize(Character),
+      tags:         serialize(Tag),
     }
 
     render_200(response)
@@ -39,5 +39,15 @@ class Api::TagsController < ApplicationController
     else
       render_422({ errors: @tag.errors.full_messages })
     end
+  end
+
+  private
+
+  def serialize model
+    tags = {}
+    model.all.as_json.map do |tag|
+      tags[tag["id"]] = tag["name"]
+    end
+    tags
   end
 end

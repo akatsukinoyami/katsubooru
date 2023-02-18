@@ -11,7 +11,12 @@ class Api::EntitiesController < ApplicationController
     entities = @current_user ? Entity.all : Entity.safe
 
     @pagy, @entities = pagy(entities, items: object_params[:items])
-    render_200(@entities)
+
+    result = @entities.each_with_object({}) do |entity, entities|
+      entities[entity["id"]] = entity
+    end
+
+    render_200(result)
   end
 
   def show
