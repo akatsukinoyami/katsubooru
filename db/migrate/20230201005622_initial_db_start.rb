@@ -18,38 +18,26 @@ class InitialDbStart < ActiveRecord::Migration[7.0]
       t.string :file_hash,    null: false,  index: { unique: true }
       t.string :link,                       index: { unique: true }
 
-      t.integer :media_type,  null: false,  default: 0 # enum: %i[art photo anime_video real_video]
-      t.integer :rating,      null: false,  default: 0 # enum: %i[rating_unknown safe questionable nsfw]
-      t.integer :origin,      null: false,  default: 0 # enum: %i[origin_unknown telegram discord pixiv artstation danbooru gelbooru rule34]
-
       t.references :user
-      t.references :artist
       t.references :collection
 
       t.timestamps
     end
 
-    create_table :artists do |t|
-      t.string :name,         null: false,  index: { unique: true }
-    end
-
-    create_table :titles do |t|
-      t.string  :name,        null: false,  index: { unique: true }
-      t.integer :media_type,  null: false,  default: 0 # enum: %i[unknown game series movie cartoon anime hentai comic manga]
-    end
-
-    create_table :characters do |t|
-      t.string     :name,     null: false
-      t.references :title
-      t.index      %i[name title_id], unique: true
-    end
-
     create_table :tags do |t|
       t.string :name,         null: false,  index: { unique: true }
+      t.string :type
+
+      t.references :parent
     end
 
-    create_join_table :entities, :titles
+    create_join_table :entities, :authors
     create_join_table :entities, :characters
-    create_join_table :entities, :tags
+    create_join_table :entities, :medias     # %i[art photo anime_video real_video]
+    create_join_table :entities, :origins    # %i[unknown_origin game series movie cartoon anime hentai comic manga]
+    create_join_table :entities, :others
+    create_join_table :entities, :ratings    # %i[unknown_rating safe questionable nsfw]
+    create_join_table :entities, :sources    # %i[unknown_origin telegram discord pixiv artstation danbooru gelbooru rule34]
+    create_join_table :entities, :titles
   end
 end

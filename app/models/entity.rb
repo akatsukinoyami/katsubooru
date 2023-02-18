@@ -5,25 +5,36 @@ class Entity < ApplicationRecord
   before_validation :set_file_hash
 
   belongs_to :user
-  belongs_to :artist, optional: true
   belongs_to :collection, optional: true
 
-  has_and_belongs_to_many :characters,  class_name: "Character",  join_table: "characters_entities"
-  has_and_belongs_to_many :titles,      class_name: "Title",      join_table: "entities_titles"
-  has_and_belongs_to_many :tags,        class_name: "Tag",        join_table: "entities_tags"
-
-  enum :media_type, %i[art photo anime_video real_video]
-  enum :rating,     %i[rating_unknown safe questionable nsfw]
-  enum :origin,     %i[origin_unknown telegram discord pixiv artstation danbooru gelbooru rule34]
+  has_and_belongs_to_many :authors,
+                          class_name: "Author",
+                          join_table: "authors_entities"
+  has_and_belongs_to_many :characters,
+                          class_name: "Character",
+                          join_table: "characters_entities"
+  has_and_belongs_to_many :medias,
+                          class_name: "Media",
+                          join_table: "entities_medias"
+  has_and_belongs_to_many :origins,
+                          class_name: "Origin",
+                          join_table: "entities_origins"
+  has_and_belongs_to_many :others,
+                          class_name: "Other",
+                          join_table: "entities_others"
+  has_and_belongs_to_many :ratings,
+                          class_name: "Rating",
+                          join_table: "entities_ratings"
+  has_and_belongs_to_many :sources,
+                          class_name: "Source",
+                          join_table: "entities_sources"
+  has_and_belongs_to_many :titles,
+                          class_name: "Title",
+                          join_table: "entities_titles"
 
   def as_json(options = {})
-    options[:include] = %i[titles characters tags]
+    options[:include] = %i[authors characters medias origins others ratings sources titles]
     hash = super(options)
-    hash["file"]["thumb"] = hash.dig("file", "thumb", "url")
-
-    ["titles", "characters", "tags"].each do |tag_name|
-      hash[tag_name] = hash[tag_name].map { |tag| tag["id"] }
-    end
     hash
   end
 

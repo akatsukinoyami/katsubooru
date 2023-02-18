@@ -14,16 +14,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "artists", force: :cascade do |t|
-    t.string "name", null: false
-    t.index ["name"], name: "index_artists_on_name", unique: true
-  end
-
-  create_table "characters", force: :cascade do |t|
-    t.string "name", null: false
-    t.bigint "title_id"
-    t.index ["name", "title_id"], name: "index_characters_on_name_and_title_id", unique: true
-    t.index ["title_id"], name: "index_characters_on_title_id"
+  create_table "authors_entities", id: false, force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.bigint "author_id", null: false
   end
 
   create_table "characters_entities", id: false, force: :cascade do |t|
@@ -40,24 +33,39 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
     t.string "file", null: false
     t.string "file_hash", null: false
     t.string "link"
-    t.integer "media_type", default: 0, null: false
-    t.integer "rating", default: 0, null: false
-    t.integer "origin", default: 0, null: false
     t.bigint "user_id"
-    t.bigint "artist_id"
     t.bigint "collection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["artist_id"], name: "index_entities_on_artist_id"
     t.index ["collection_id"], name: "index_entities_on_collection_id"
     t.index ["file_hash"], name: "index_entities_on_file_hash", unique: true
     t.index ["link"], name: "index_entities_on_link", unique: true
     t.index ["user_id"], name: "index_entities_on_user_id"
   end
 
-  create_table "entities_tags", id: false, force: :cascade do |t|
+  create_table "entities_medias", id: false, force: :cascade do |t|
     t.bigint "entity_id", null: false
-    t.bigint "tag_id", null: false
+    t.bigint "media_id", null: false
+  end
+
+  create_table "entities_origins", id: false, force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.bigint "origin_id", null: false
+  end
+
+  create_table "entities_others", id: false, force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.bigint "other_id", null: false
+  end
+
+  create_table "entities_ratings", id: false, force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.bigint "rating_id", null: false
+  end
+
+  create_table "entities_sources", id: false, force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.bigint "source_id", null: false
   end
 
   create_table "entities_titles", id: false, force: :cascade do |t|
@@ -67,13 +75,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_005622) do
 
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
+    t.string "type"
+    t.bigint "parent_id"
     t.index ["name"], name: "index_tags_on_name", unique: true
-  end
-
-  create_table "titles", force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "media_type", default: 0, null: false
-    t.index ["name"], name: "index_titles_on_name", unique: true
+    t.index ["parent_id"], name: "index_tags_on_parent_id"
   end
 
   create_table "users", force: :cascade do |t|

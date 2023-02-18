@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Title < Tag
+class Author < Tag
   has_and_belongs_to_many :entities,
                           class_name: "Entity",
-                          join_table: "entities_titles"
+                          join_table: "authors_entities"
 end

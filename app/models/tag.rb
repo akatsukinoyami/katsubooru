@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
 class Tag < ApplicationRecord
-  has_and_belongs_to_many :entities, class_name: "Entity", join_table: "entities_tags"
+  self.abstract_class
+
+  belongs_to :parent, class_name: "Tag"
+  has_many :children, class_name: "Tag"
 end
