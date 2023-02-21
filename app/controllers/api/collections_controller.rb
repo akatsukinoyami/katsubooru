@@ -29,6 +29,7 @@ class Api::CollectionsController < ApplicationController
   # DELETE /collections/1
   def destroy
     @collection.destroy
+    render_200({})
   end
 
   private
