@@ -1,23 +1,46 @@
 # frozen_string_literal: true
 
 class Api::TagsController < ApplicationController
-  def all
+
+  # GET /tags
+  def index
     response = {
-      artists:      serialize(Artist),
-      titles:       serialize(Title),
-      characters:   serialize(Character),
-      tags:         serialize(Tag),
+      "types" => TagType.pluck(:id, :name).to_h
     }
+
+    tag_types = TagType.pluck(:name)
+    tags_by_type = Tag
+      .includes(:tag_type)
+      .where(tag_types: { name: tag_types })
+      .group_by { |tag| tag.tag_type.name }
+
+    tag_types.each do |name|
+      response[name] = tags_by_type[name]
+        &.pluck(:id, :name)
+        .to_h || {}
+    end
 
     render_200(response)
   end
 
-  def index
-    render_200(model.all)
+  # GET /tags/media
+  def show
+    response = if params[:id] == "types"
+      TagType
+    else
+      Tag
+        .includes(:tag_type)
+        .where(tag_types: { name: params[:id] })
+    end
+      &.pluck(:id, :name)
+      .to_h || {}
+
+    render_200(response)
   end
 
+  # POST /tags
   def create
-    @tag = model.new(object_params)
+    @tag = Tag.new(object_params)
 
     if @tag.save
       render_201(@tag)
@@ -26,11 +49,12 @@ class Api::TagsController < ApplicationController
     end
   rescue ActiveRecord::RecordNotUnique
     render_422({
-      data: model.where(name: @tag.name),
+      data: Tag.where(name: @tag.name),
       errors: [t('errors.tag_is_not_unique', tag: model.name)]
     })
   end
 
+  # PUT /tags
   def update
     @tag = model.find(params[:id])
 
@@ -43,11 +67,7 @@ class Api::TagsController < ApplicationController
 
   private
 
-  def serialize model
-    tags = {}
-    model.all.as_json.map do |tag|
-      tags[tag["id"]] = tag["name"]
-    end
-    tags
+  def object_params
+    params.permit(:name, :parent_id)
   end
 end
