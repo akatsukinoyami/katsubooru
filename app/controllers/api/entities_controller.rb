@@ -9,13 +9,8 @@ class Api::EntitiesController < ApplicationController
 
   def index
     entities = @current_user ? Entity.all : Entity.safe
-
     @pagy, @entities = pagy(entities, items: object_params[:items])
-
-    result = @entities.each_with_object({}) do |entity, entities|
-      entities[entity["id"]] = entity
-    end
-
+    result = @entities.index_by(&:id)
     render_200(result)
   end
 
