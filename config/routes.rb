@@ -8,12 +8,7 @@ Rails.application.routes.draw do
     resources :entities
     resources :collections
     resources :users, except: %i[create]
-    namespace :tags do
-      resources :artists,    only: %i[index create update]
-      resources :titles,     only: %i[index create update]
-      resources :characters, only: %i[index create update]
-      resources :tags,       only: %i[index create update]
-    end
+    resources :tags,  only: %i[index show create update]
 
     get  '/tags',         to: 'tags#all'
     post '/auth/sign_in', to: 'authentication#sign_in'
