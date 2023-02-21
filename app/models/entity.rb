@@ -7,41 +7,41 @@ class Entity < ApplicationRecord
   belongs_to :user
   belongs_to :collection, optional: true
 
-  has_and_belongs_to_many :authors,
-                          class_name: "Author",
-                          join_table: "authors_entities"
-  has_and_belongs_to_many :characters,
-                          class_name: "Character",
-                          join_table: "characters_entities"
-  has_and_belongs_to_many :medias,
-                          class_name: "Media",
-                          join_table: "entities_medias"
-  has_and_belongs_to_many :origins,
-                          class_name: "Origin",
-                          join_table: "entities_origins"
-  has_and_belongs_to_many :others,
-                          class_name: "Other",
-                          join_table: "entities_others"
-  has_and_belongs_to_many :ratings,
-                          class_name: "Rating",
-                          join_table: "entities_ratings"
-  has_and_belongs_to_many :sources,
-                          class_name: "Source",
-                          join_table: "entities_sources"
-  has_and_belongs_to_many :titles,
-                          class_name: "Title",
-                          join_table: "entities_titles"
+  has_and_belongs_to_many :tags
 
-  def as_json(options = {})
-    options[:include] = %i[authors characters medias origins others ratings sources titles]
-    hash = super(options)
-    hash
-  end
+  # Hooks methods
 
-  def set_file_hash
-    if self.file.url
-      path = Dir.pwd + "/public" + self.file.url
-      self.file_hash = ImageHash.new(path).hash
+    # Called before_validation
+    def set_file_hash
+      if self.file.url
+        path = Dir.pwd + "/public" + self.file.url
+        self.file_hash = ImageHash.new(path).hash
+      end
     end
-  end
+
+    # Called on rendering as_json
+    def as_json(options = {})
+      hash = super(options.merge({
+        methods: [:tags_select, :tags_multiselect],
+      }))
+
+      hash['file']['thumb'] = hash['file']['thumb']['url']
+      hash
+    end
+
+  # Additional method
+
+    def tags_select
+      self.tags.joins(:tag_type).where(tag_type: { allows_multiple: false })
+    end
+
+    def tags_multiselect
+      self.tags.joins(:tag_type).where(tag_type: { allows_multiple: true })
+    end
+
+    %w[safe sensitive nsfw].each do |name|
+      define_method("#{name}?".to_sym, -> {
+        self.tags.include? Tag.find_by(name:)
+      })
+    end
 end

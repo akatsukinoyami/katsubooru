@@ -30,3 +30,5 @@
 
 # Ignore seeds
 /db/seeds.rb
+/db/seeds/*
+/spec/fixtures/*

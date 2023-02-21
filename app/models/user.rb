@@ -17,7 +17,11 @@ class User < ApplicationRecord
     options[:except] = %i[password_digest]
     hash = super(options)
 
-    hash["token"] = jwt_encode(user_id: self.id)
+    hash["token"] = self.token
     hash
+  end
+
+  def token
+    jwt_encode(user_id: self.id)
   end
 end
