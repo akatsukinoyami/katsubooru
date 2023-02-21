@@ -21,27 +21,38 @@ class Entity < ApplicationRecord
 
     # Called on rendering as_json
     def as_json(options = {})
-      hash = super(options.merge({
-        methods: [:tags_select, :tags_multiselect],
-      }))
-
-      hash['file']['thumb'] = hash['file']['thumb']['url']
-      hash
-    end
-
-  # Additional method
-
-    def tags_select
-      self.tags.joins(:tag_type).where(tag_type: { allows_multiple: false })
-    end
-
-    def tags_multiselect
-      self.tags.joins(:tag_type).where(tag_type: { allows_multiple: true })
-    end
-
-    %w[safe sensitive nsfw].each do |name|
-      define_method("#{name}?".to_sym, -> {
-        self.tags.include? Tag.find_by(name:)
+      hash = super(options)
+      hash.merge({
+        'thumb' => hash['file']['thumb']['url'],
+        'file' => hash['file']['url'],
+        'tags' => self.tags_pluck
       })
+    end
+
+  def tags_pluck result={}
+    # Refactored using ChatGPT
+    tag_types = TagType.pluck(:name)
+    tag_ids_by_type = self
+      .tags
+      .includes(:tag_type)
+      .where(tag_types: {name: tag_types})
+      .group_by { |tag| tag.tag_type.name }
+
+    tag_types.each do |name|
+      result[name] = tag_ids_by_type[name]&.pluck(:id) || []
+    end
+
+    result
+  end
+
+  # Additional methods
+    %w[safe sensitive nsfw].each do |name|
+      define_method("#{name}?".to_sym,
+        -> { self.tags.include? Tag.find_by(name:) }
+      )
+
+      scope("#{name}".to_sym,
+        -> { joins(:tags).where(tags: { name: }) }
+      )
     end
 end
