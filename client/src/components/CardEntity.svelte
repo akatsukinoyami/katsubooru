@@ -8,7 +8,7 @@
 <a
   class="card" use:links
   href="{location.origin}/entities/{entity.id}"
-  style="background-image: url({entity.file.thumb});"
+  style="background-image: url({entity.thumb});"
 >&nbsp;</a>
 
 <style lang="sass">
