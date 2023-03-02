@@ -1,14 +1,13 @@
+import { get } from "svelte/store";
 import { lang } from "../stores";
-import en from "./en.json";
+import en from "./en";
 
-const langs = {en}
+const langs = { en }
 
 export default function i18n(){
-  let langValue: string;
-  const unsubscribe = lang.subscribe((value) => langValue = value)
-
-  if (Object.keys(langs).includes(langValue)){
-    return langs[langValue]
+  const currentLang = get(lang)
+  if (Object.keys(langs).includes(currentLang)){
+    return langs[currentLang]
   } else {
     return langs.en
   }
