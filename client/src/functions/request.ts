@@ -1,5 +1,4 @@
-import alertsHandler from "./alerts";
-import { currentUser } from "../stores/currentUser";
+import { alerts, currentUser } from "../stores";
 import type { RequestParameters } from "../interfaces";
 
 interface HeadersInterface extends Record<string, string>{
@@ -29,14 +28,14 @@ export async function GET({
     const json = await response.json();
 
     if (json?.errors) {
-      alertsHandler.showErrors(json.errors);
+      alerts.showErrors(json.errors);
     } else {
       callbackFn(json);
     };
 
     return json;
   } catch (error) {
-    alertsHandler.showError(error);
+    alerts.showError(error);
   }
 }
 
@@ -52,13 +51,13 @@ export async function POST({
     const json = await response.json();
 
     if (json?.errors) {
-      alertsHandler.showErrors(json.errors);
+      alerts.showErrors(json.errors);
     } else {
       callbackFn(json);
     };
 
     return json;
   } catch (error) {
-    alertsHandler.showError(error);
+    alerts.showError(error);
   }
 }
