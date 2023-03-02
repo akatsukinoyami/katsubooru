@@ -5,21 +5,9 @@ class Api::TagsController < ApplicationController
   # GET /tags
   def index
     response = {
-      "types" => TagType.pluck(:id, :name).to_h
+      "types" => TagType.pluck(:id, :name).to_h,
+      "tags" => Tag.all.index_by(&:id),
     }
-
-    tag_types = TagType.pluck(:name)
-    tags_by_type = Tag
-      .includes(:tag_type)
-      .where(tag_types: { name: tag_types })
-      .group_by { |tag| tag.tag_type.name }
-
-    tag_types.each do |name|
-      response[name] = tags_by_type[name]
-        &.pluck(:id, :name)
-        .to_h || {}
-    end
-
     render_200(response)
   end
 

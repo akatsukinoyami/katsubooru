@@ -3,15 +3,15 @@
 class Api::EntitiesController < ApplicationController
   include Pagy::Backend
 
-  before_action :authenticate,       only: %i[index]
   before_action :set_object,         only: %i[show update destroy]
   after_action  :pagination_headers, only: %i[index]
 
   def index
     entities = @current_user ? Entity.all : Entity.safe
+
     @pagy, @entities = pagy(entities, items: object_params[:items])
-    result = @entities.index_by(&:id)
-    render_200(result)
+
+    render_200(@entities.index_by(&:id))
   end
 
   def show

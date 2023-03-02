@@ -17,7 +17,7 @@ class User < ApplicationRecord
     options[:except] = %i[password_digest]
     hash = super(options)
 
-    hash["token"] = self.token
+    hash["token"] = "Bearer #{self.token}"
     hash
   end
 

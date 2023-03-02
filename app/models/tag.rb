@@ -15,9 +15,7 @@ class Tag < ApplicationRecord
 
 
   def as_json(options = {})
-    super(options.merge({
-      except: :parent_id
-    }))
+    super(options)
   end
 
   # Returns array including self and parent tags, if parent present
