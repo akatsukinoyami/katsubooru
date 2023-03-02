@@ -1,7 +1,6 @@
-import { currentUser } from "../stores/currentUser";
+import { alerts, currentUser } from "../stores";
 import { POST } from "../functions/request";
 import { getValueById } from "../functions/helper";
-import alertsHandler from "../functions/alerts";
 import i18n from "../i18n/i18n";
 
 const t = i18n()
@@ -16,7 +15,7 @@ export async function signIn(): Promise<void> {
     callbackFn: (data: Record<any, any>) => {
       if (data.name){
         currentUser.set(data);
-        alertsHandler.showNotice(t.succesful.sign_in)
+        alerts.showNotice(t.succesful.sign_in)
       }
     },
   })
@@ -33,7 +32,7 @@ export async function signUp(): Promise<void> {
     callbackFn: (data: Record<any, any>) => {
       if (data.name) {
         currentUser.set(data);
-        alertsHandler.showNotice(t.succesful.sign_up)
+        alerts.showNotice(t.succesful.sign_up)
       }
     },
   })
@@ -41,5 +40,5 @@ export async function signUp(): Promise<void> {
 
 export function signOut(): void {
   currentUser.set({})
-  alertsHandler.showNotice(t.succesful.sign_out)
+  alerts.showNotice(t.succesful.sign_out)
 }
