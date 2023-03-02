@@ -1,5 +1,5 @@
 import type { columnSizeType } from "../types";
-export type { default as EntityInterface, FileInterface } from "./entity";
+export type { default as EntityInterface } from "./entity";
 
 export interface AlertInterface {
   error: boolean,

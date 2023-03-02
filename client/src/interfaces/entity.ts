@@ -1,22 +1,14 @@
+import type { TagsType } from "../types";
+
 export default interface EntityInterface {
   id: number,
-  file: FileInterface,
+  file: string,
   file_hash: string,
   link: string,
-  media_type: string,
-  rating: string,
-  origin: string,
   user_id: number,
-  artist_id: number,
   collection_id: number,
-  titles: number[],
-  characters: number[],
-  tags: number[],
+  tags: TagsType,
+  thumb: string,
   created_at: string,
   updated_at: string,
-}
-
-export interface FileInterface {
-  url: string,
-  thumb: string,
 }
