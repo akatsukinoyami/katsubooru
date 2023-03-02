@@ -3,7 +3,8 @@
 class ApplicationController < ActionController::API
   include JsonWebToken
 
-  before_action :authenticate_request, except: %i[all index fallback_index_html]
+  before_action :authenticate, only: %i[index]
+  before_action :authenticate_request, except: %i[index fallback_index_html]
 
   def fallback_index_html
     render file: "public/index.html"
