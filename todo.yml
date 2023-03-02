@@ -17,8 +17,6 @@ todo:
       - Edit
   - FE:
   - BE:
-    - Create model for "Entities collection"
-    - Rename tags to other name
 
 made:
   - FE:
@@ -28,6 +26,10 @@ made:
     - 2023.02.15:
       - End choosing CSS framework, stopped on materialize
   - BE:
+    - 2023.02.21:
+      - remworked tags system to have models tag and tag_type
+      - made sql-function to disallow add multiple tags of some types (e.g. 2 cameras on one photo)
+      - major refactoring
     - 2023.02.05:
       - Added image hashing and uniqness for hashes
       - Returning image with same hash if present
