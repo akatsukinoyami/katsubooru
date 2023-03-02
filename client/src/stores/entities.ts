@@ -1,79 +1,103 @@
 import { Writable, writable, get } from 'svelte/store';
 import { GET } from '../functions/request';
-import type EntityInterface from '../interfaces/entity';
-
-type EntitiesObjectType = Record<number, EntityInterface>;
+import type { EntityInterface } from '../interfaces';
+import type { EntitiesObjectType, TagsType } from '../types';
 
 export interface EntitiesWritableStore extends Writable<EntitiesObjectType> {
-  all: () => Promise<EntitiesObjectType>,
-  array: () => EntityInterface[],
+  all: () => EntitiesObjectType,
   count: () => number,
   empty: () => boolean,
-  findBy: (key: string, value: string | number) => Promise<EntityInterface>,
-  findById: (value: string | number) => Promise<EntityInterface>,
+  findBy: (key: string, value: string | number) => EntityInterface,
+  findById: (value: string | number) => EntityInterface,
   first: () => EntityInterface,
+  keys: () => string[] | number[],
   last: () => EntityInterface,
-  load: (callbackFn: (json: unknown[]) => void) => void;
-  loadClear: () => void,
+  load: () => Promise<void>;
+  loadClear: () => Promise<void>,
   loadById: (id: number | string) => Promise<EntityInterface>,
-  where: (key: string, value: string | number) => Promise<EntitiesObjectType>,
+  tags: () => Record<string, number[]>,
+  values: () => EntityInterface[],
+  where: (key: string, value: string | number) => EntitiesObjectType,
 }
 
 export const entities: EntitiesWritableStore = {
   ...writable({}),
 
-  all: async function(): Promise<EntitiesObjectType> {
-    if (!this.empty) return get<EntitiesObjectType>(this);
-
-    await this.load();
+  all(): EntitiesObjectType {
     return get<EntitiesObjectType>(this);
   },
 
-  array: function (): EntityInterface[] {
-    return Object.values(get<EntitiesObjectType>(this));
+  count(): number {
+    return this.keys().length;
   },
 
-  count: function (): number {
-    return Object.keys(get<EntitiesObjectType>(this)).length;
+  empty(): boolean {
+    return this.count === 0;
   },
 
-  empty: function (): boolean {
-    return this.count > 0;
+  findBy(key: string, value: string | number): EntityInterface {
+    return this.values().find((entity: EntityInterface) => { entity[key] == value });
   },
 
-  findBy: async function(key: string, value: string | number): Promise<EntityInterface> {
-    return this.array().find((entity: EntityInterface) => { entity[key] == value });
-  },
-
-  findById: async function(value: string | number): Promise<EntityInterface> {
+  findById(value: string | number): EntityInterface {
     return get<EntitiesObjectType>(this)[value];
   },
 
-  first: function(): EntityInterface{
-    return this.array()[0];
+  first(): EntityInterface{
+    return this.values()[0];
   },
 
-  last: function(): EntityInterface{
-    return this.array()[this.count - 1];
+  keys(): string[] | number[] {
+    return Object.keys(get<EntitiesObjectType>(this));
   },
 
-  load: async function(){
+  last(): EntityInterface{
+    return this.values()[this.count - 1];
+  },
+
+  async load(): Promise<void>{
     const response = await GET({ path: '/api/entities' }) as EntitiesObjectType;
     this.set({...get(entities), ...response});
   },
 
-  loadById: async function(id: string | number){
+  async loadById(id: string | number): Promise<EntityInterface>{
     const response = await GET({ path: `/api/entities/${id}` }) as EntityInterface;
     this.set({...get(entities), response});
     return response;
   },
 
-  loadClear: async function(){
+  async loadClear(): Promise<void>{
     const response = await GET({ path: '/api/entities' }) as EntitiesObjectType;
     this.set({...response});
   },
 
-  where: async function(key: string, value: string | number): Promise<EntitiesObjectType> {
-    return this.array().filter((entity: EntityInterface) => { entity[key] == value });
+  tags(): TagsType{
+    const allTags: TagsType = {};
+
+    this.values().forEach((entity: EntityInterface) => {
+      const entityTags = entity.tags;
+
+      Object.keys(entityTags).forEach(tagType => {
+        const tags = entityTags[tagType];
+
+        if (allTags[tagType]) {
+          allTags[tagType].push(...tags.filter(tag => !allTags[tagType].includes(tag)));
+        } else {
+          allTags[tagType] = tags;
+        }
+      });
+    });
+
+    return allTags;
+  },
+
+  values(): EntityInterface[] {
+    return Object.values(get<EntitiesObjectType>(this));
+  },
+
+  where(key: string, value: string | number): EntitiesObjectType {
+    return this
+      .values()
+      .filter((entity: EntityInterface) => { entity[key] === value });
   },
 }
