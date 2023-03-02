@@ -1,35 +1,41 @@
 import { Writable, writable, get } from 'svelte/store';
 import { GET } from '../functions/request';
-import type { TagType } from '../types';
+import type { TagsType, TagType } from '../types';
 
-interface TagsInterface {
-  artists:    TagType[],
-  titles:     TagType[],
-  characters: TagType[],
-  tags:       TagType[]
-}
-interface TagsStoreInterface extends Writable<TagsInterface> {
-  all: () => Promise<TagsInterface>,
+interface TagsStoreInterface extends Writable<TagsType> {
+  all: () => TagsType,
   empty: () => boolean,
   load: () => Promise<void>,
+  [key: string]: TagType | any,
+}
+
+interface TagsIndexApiResponseInterface {
+  tags: Record<string, string>,
+  types: Record<string, string>,
 }
 
 export const tags: TagsStoreInterface = {
-  ...writable({}) as Writable<TagsInterface>,
+  ...writable({}) as Writable<TagsType>,
 
-  all: async function(): Promise<TagsInterface>{
-    if (!this.empty) return get<TagsInterface>(this);
-
-    await this.load();
-    return get<TagsInterface>(this);
+  all(): TagsType {
+    return get<TagsType>(this);
   },
 
-  empty: function (): boolean {
-    return Object.keys(get<TagsInterface>(this)).length > 0;
+  findById(id: string | number): TagType {
+    const { tags } = get<TagsType>(this);
+    id = id.toString();
+    return tags[id];
   },
 
-  load: async function(): Promise<void>{
-    const response = await GET({ path: '/api/tags' });
-    this.set(response);
+  empty(): boolean {
+    return Object.keys(get<TagsType>(this)).length > 0;
+  },
+
+  async load(): Promise<void>{
+    const { tags, types } = await GET({ path: '/api/tags' }) as TagsType;
+    this.tags = tags;
+    this.types = types;
+
+    this.set({ tags, types });
   },
 }
